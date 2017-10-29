@@ -47,6 +47,6 @@ import ReactPageScroller from "react-page-scroller";
 
 react-page-scroller requires:
 
--React
--lodash
--Prop Types
+  - React
+  - lodash
+  - Prop Types
