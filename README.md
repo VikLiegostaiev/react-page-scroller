@@ -4,7 +4,7 @@ Simple React component for smoothy full-page scolling.
 
 ### Demo
 
-You can scroll the page by mouse wheel, touch scroll or keyboard arrows.
+You can scroll the page using mouse wheel, touch scroll or keyboard arrows.
 
 Live demo: [vikliegostaiev.github.io/react-page-scroller](https://vikliegostaiev.github.io/react-page-scroller/)
 
