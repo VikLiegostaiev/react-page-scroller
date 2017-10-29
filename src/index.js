@@ -16,8 +16,12 @@ export default class ReactPageScroller extends React.Component {
 
     componentDidMount = () => {
 
-        document.addEventListener("wheel", this.wheelScroll);
-        document.addEventListener("touchmove", this.touchMove);
+        document.ontouchmove = (event) => {
+            event.preventDefault();
+        };
+
+        this._pageContainer.addEventListener("wheel", this.wheelScroll);
+        this._pageContainer.addEventListener("touchmove", this.touchMove);
         document.addEventListener("keydown", this.keyPress);
 
         if (!_.isNil(this.props.children[this.state.componentIndex])) {
@@ -42,8 +46,8 @@ export default class ReactPageScroller extends React.Component {
 
     componentWillUnmount = () => {
 
-        document.removeEventListener("wheel", this.wheelScroll);
-        document.removeEventListener("touchmove", this.touchMove);
+        this._pageContainer.removeEventListener("wheel", this.wheelScroll);
+        this._pageContainer.removeEventListener("touchmove", this.touchMove);
         document.removeEventListener("keydown", this.keyPress);
 
     };
@@ -55,7 +59,7 @@ export default class ReactPageScroller extends React.Component {
                 this.state.componentsToRender.push(
                     <div key={this.state.componentIndex + 1}
                          ref={c => this["container_" + (this.state.componentIndex + 1)] = c}
-                         style={{height: window.innerHeight + "px", width: "100%", display: "none"}}>
+                         style={{height: window.innerHeight + "px", width: "100%"}}>
                         {this.props.children[this.state.componentIndex + 1]}
                     </div>
                 );
@@ -84,7 +88,6 @@ export default class ReactPageScroller extends React.Component {
             } else {
                 this.scrollWindowDown();
             }
-            this[previousTouchMove] = null;
         } else {
             this[previousTouchMove] = event.touches[0].clientY;
         }
@@ -112,6 +115,7 @@ export default class ReactPageScroller extends React.Component {
             setTimeout(() => {
                 this.setState((prevState) => ({componentIndex: prevState.componentIndex - 1}), () => {
                     this[scrolling] = false;
+                    this[previousTouchMove] = null;
                 });
             }, this.props.animationTimer + 200)
 
@@ -124,12 +128,12 @@ export default class ReactPageScroller extends React.Component {
         if (!_.isNil(this["container_" + (this.state.componentIndex + 1)]) && !this[scrolling]) {
 
             this[scrolling] = true;
-            this["container_" + (this.state.componentIndex + 1)].style.display = "block";
             this._pageContainer.style.transform = `translate3d(0, ${(this.state.componentIndex + 1) * -100}%, 0)`;
 
             setTimeout(() => {
                 this.setState((prevState) => ({componentIndex: prevState.componentIndex + 1}), () => {
                     this[scrolling] = false;
+                    this[previousTouchMove] = null;
                     this.addNextComponent();
                 });
             }, this.props.animationTimer + 200)
