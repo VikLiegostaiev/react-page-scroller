@@ -17,7 +17,7 @@ npm start
 
 App will start on localhost:3000.
 
-#Installation
+# Installation
 
 via npm:
 
@@ -25,7 +25,7 @@ via npm:
 npm install react-page-scroller --save
 ```
 
-##Usage
+## Usage
 
 Example is in demo/src.
 
@@ -36,14 +36,14 @@ import ReactPageScroller from "react-page-scroller";
   (your components hear)
 </ReactPageScroller>
 ```
-#Properties
+# Properties
 
 |    Property    | Type |          Description          | Default Value |
 | -------------  | ---- |          -----------          | ------- |
 | animationTimer  | number | Animation duration in milliseconds | 1000 |
 | transitionTimingFunction      | String | CSS transition timing function name | ease-in-out |
 
-##Dependencies
+## Dependencies
 
 react-page-scroller requires:
 
