@@ -22,7 +22,7 @@ export default class ReactPageScroller extends React.Component {
 
         this._pageContainer.addEventListener("wheel", this.wheelScroll);
         this._pageContainer.addEventListener("touchmove", this.touchMove);
-        document.addEventListener("keydown", this.keyPress);
+        this._pageContainer.addEventListener("keydown", this.keyPress);
 
         if (!_.isNil(this.props.children[this.state.componentIndex])) {
             this.state.componentsToRender.push(
@@ -153,7 +153,8 @@ export default class ReactPageScroller extends React.Component {
                          height: "100%",
                          width: "100%",
                          transition: `transform ${animationTimer}ms ${transitionTimingFunction}`
-                     }}>
+                     }}
+                     tabIndex={0}>
                     {this.state.componentsToRender}
                 </div>
             </div>
