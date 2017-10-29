@@ -143,7 +143,7 @@ export default class ReactPageScroller extends React.Component {
 
         return (
 
-            <div style={{width: "100%", height: "100%", overflow: "hidden"}}>
+            <div style={{width: window.innerWidth, height: window.innerHeight, overflow: "hidden"}}>
                 <div ref={c => this._pageContainer = c}
                      style={{
                          height: "100%",
