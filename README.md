@@ -8,7 +8,7 @@ You can scroll the page by mouse wheel, touch scroll or keyboard arrows.
 
 Live demo: [vikliegostaiev.github.io/react-page-scroller](https://vikliegostaiev.github.io/react-page-scroller/)
 
-To run demo app locally you should:
+To run demo app locally:
 
 ```
 npm install
