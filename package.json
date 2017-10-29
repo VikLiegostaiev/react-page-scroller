@@ -1,7 +1,7 @@
 {
   "name": "react-page-scroller",
   "version": "1.0.0",
-  "description": "react-page-scroller React component",
+  "description": "Simple React component for smoothy full-page scolling",
   "main": "lib/index.js",
   "module": "es/index.js",
   "files": [
@@ -30,8 +30,14 @@
   "author": "Viktor Liegostaiev",
   "homepage": "",
   "license": "MIT",
-  "repository": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vikliegostaiev/react-page-scroller.git"
+  },
   "keywords": [
-    "react-component"
+    "react-component",
+    "full-page",
+    "scroll",
+    "smoothy"
   ]
 }
