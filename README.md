@@ -1,2 +1,4 @@
 # React Page Scroller
-React component for smoothy  full-page scolling
+
+Simple React component for smoothy full-page scolling.
+
