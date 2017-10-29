@@ -8,6 +8,8 @@ import ThirdComponent from "./ThirdComponent";
 import FourthComponent from "./FourthComponent";
 import FifthComponent from "./FifthComponent";
 
+import "./index.css";
+
 class Demo extends React.Component {
 
     render() {

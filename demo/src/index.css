@@ -1,0 +1,36 @@
+html, body {
+    margin: 0;
+    height: 100%;
+    width: 100%;
+}
+
+.component {
+    height: 100%;
+    width: 100%;
+    display: flex;
+}
+
+.component.first-component {
+    background-color: gray;
+}
+
+.component.second-component {
+    background-color: red;
+}
+
+.component.third-component {
+    background-color: blue;
+}
+
+.component.fourth-component {
+    background-color: yellow;
+}
+
+.component.fifth-component {
+    background-color: purple;
+}
+
+h2 {
+    margin: auto;
+    text-align: center;
+}
