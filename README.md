@@ -33,7 +33,7 @@ Example is in demo/src.
 import ReactPageScroller from "react-page-scroller";
 
 <ReactPageScroller>
-  (your components hear)
+  (your components here)
 </ReactPageScroller>
 ```
 # Properties
