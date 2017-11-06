@@ -16,6 +16,8 @@ export default class ReactPageScroller extends React.Component {
 
     componentDidMount = () => {
 
+        window.addEventListener('resize', this.onWindowResized);
+
         document.ontouchmove = (event) => {
             event.preventDefault();
         };
@@ -27,14 +29,14 @@ export default class ReactPageScroller extends React.Component {
         if (!_.isNil(this.props.children[this.state.componentIndex])) {
             this.state.componentsToRender.push(
                 <div key={this.state.componentIndex} ref={c => this["container_" + this.state.componentIndex] = c}
-                     style={{height: window.innerHeight + "px", width: "100%"}}>
+                     style={{height: "100%", width: "100%"}}>
                     {this.props.children[this.state.componentIndex]}
                 </div>
             );
         } else {
             this.state.componentsToRender.push(
                 <div ref={c => this["container_" + this.state.componentIndex] = c}
-                     style={{height: window.innerHeight + "px", width: "100%"}}>
+                     style={{height: "100%", width: "100%"}}>
                     {this.props.children}
                 </div>
             );
@@ -46,10 +48,16 @@ export default class ReactPageScroller extends React.Component {
 
     componentWillUnmount = () => {
 
+        window.removeEventListener('resize', this.onWindowResized);
+
         this._pageContainer.removeEventListener("wheel", this.wheelScroll);
         this._pageContainer.removeEventListener("touchmove", this.touchMove);
-        document.removeEventListener("keydown", this.keyPress);
+        this._pageContainer.removeEventListener("keydown", this.keyPress);
 
+    };
+
+    onWindowResized = () => {
+        this.forceUpdate();
     };
 
     addNextComponent = () => {
@@ -59,7 +67,7 @@ export default class ReactPageScroller extends React.Component {
                 this.state.componentsToRender.push(
                     <div key={this.state.componentIndex + 1}
                          ref={c => this["container_" + (this.state.componentIndex + 1)] = c}
-                         style={{height: window.innerHeight + "px", width: "100%"}}>
+                         style={{height: "100%", width: "100%"}}>
                         {this.props.children[this.state.componentIndex + 1]}
                     </div>
                 );
