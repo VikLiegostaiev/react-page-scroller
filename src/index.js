@@ -120,7 +120,9 @@ export default class ReactPageScroller extends React.Component {
             this[scrolling] = true;
             this._pageContainer.style.transform = `translate3d(0, ${(this.state.componentIndex - 1) * -100}%, 0)`;
 
-            this.props.onPageChange();
+            if(this.props.pageOnChange) {
+                this.props.onPageChange();
+            }
 
             setTimeout(() => {
                 this.setState((prevState) => ({componentIndex: prevState.componentIndex - 1}), () => {
@@ -140,7 +142,9 @@ export default class ReactPageScroller extends React.Component {
             this[scrolling] = true;
             this._pageContainer.style.transform = `translate3d(0, ${(this.state.componentIndex + 1) * -100}%, 0)`;
 
-            this.props.onPageChange();
+            if(this.props.pageOnChange) {
+                this.props.onPageChange();
+            }
 
             setTimeout(() => {
                 this.setState((prevState) => ({componentIndex: prevState.componentIndex + 1}), () => {
