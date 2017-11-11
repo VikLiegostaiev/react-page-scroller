@@ -42,6 +42,7 @@ import ReactPageScroller from "react-page-scroller";
 | -------------  | ---- |          -----------          | ------- |
 | animationTimer  | number | Animation duration in milliseconds | 1000 |
 | transitionTimingFunction      | String | CSS transition timing function name | ease-in-out |
+| pageOnChange  | function | callback on page scroll | |
 
 ## Dependencies
 
