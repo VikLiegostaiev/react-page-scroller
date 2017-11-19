@@ -32,7 +32,11 @@ Example is in demo/src.
 ```js
 import ReactPageScroller from "react-page-scroller";
 
-<ReactPageScroller>
+goToPage = (pageNumber) => {
+  this.reactPageScroller.goToPage(pageNumber);
+}
+
+<ReactPageScroller ref={c => this.reactPageScroller = c}>
   (your components here)
 </ReactPageScroller>
 ```
@@ -43,6 +47,7 @@ import ReactPageScroller from "react-page-scroller";
 | animationTimer  | number | Animation duration in milliseconds | 1000 |
 | transitionTimingFunction      | String | CSS transition timing function name | ease-in-out |
 | pageOnChange  | function | callback on page scroll | |
+| goToPage  | function | using with ref, go to selected page | |
 
 ## Dependencies
 
