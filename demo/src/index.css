@@ -35,3 +35,16 @@ h2 {
     margin: auto;
     text-align: center;
 }
+
+.pagination-additional-class {
+    margin: 0;
+    position: fixed;
+    top: 20px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.pagination-additional-class > li > a {
+    margin-right: 50px;
+}

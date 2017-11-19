@@ -120,7 +120,7 @@ export default class ReactPageScroller extends React.Component {
             this[scrolling] = true;
             this._pageContainer.style.transform = `translate3d(0, ${(this.state.componentIndex - 1) * -100}%, 0)`;
 
-            if(this.props.pageOnChange) {
+            if (this.props.pageOnChange) {
                 this.props.pageOnChange(this.state.componentIndex);
             }
 
@@ -142,7 +142,7 @@ export default class ReactPageScroller extends React.Component {
             this[scrolling] = true;
             this._pageContainer.style.transform = `translate3d(0, ${(this.state.componentIndex + 1) * -100}%, 0)`;
 
-            if(this.props.pageOnChange) {
+            if (this.props.pageOnChange) {
                 this.props.pageOnChange(this.state.componentIndex + 2);
             }
 
@@ -154,6 +154,56 @@ export default class ReactPageScroller extends React.Component {
                 });
             }, this.props.animationTimer + 200)
 
+        }
+    };
+
+    goToPage = (number) => {
+        if (!_.isEqual(this.state.componentIndex + 1, number)) {
+            if (!_.isNil(this["container_" + (number - 1)]) && !this[scrolling]) {
+
+                this[scrolling] = true;
+                this._pageContainer.style.transform = `translate3d(0, ${(number - 1) * -100}%, 0)`;
+
+                if (this.props.pageOnChange) {
+                    this.props.pageOnChange(number);
+                }
+
+                setTimeout(() => {
+                    this.setState((prevState) => ({componentIndex: number - 1}), () => {
+                        this[scrolling] = false;
+                        this[previousTouchMove] = null;
+                    });
+                }, this.props.animationTimer + 200)
+
+            } else if (!this[scrolling]) {
+                if (!_.isNil(this.props.children[number - 1])) {
+
+                    for (let i = 2; i < number; i++) {
+                        this.state.componentsToRender.push(
+                            <div key={i + 1}
+                                 ref={c => this["container_" + (i)] = c}
+                                 style={{height: "100%", width: "100%"}}>
+                                {this.props.children[i]}
+                            </div>
+                        );
+                    }
+
+                    this[scrolling] = true;
+                    this._pageContainer.style.transform = `translate3d(0, ${(number - 1) * -100}%, 0)`;
+
+                    if (this.props.pageOnChange) {
+                        this.props.pageOnChange(number);
+                    }
+
+                    setTimeout(() => {
+                        this.setState((prevState) => ({componentIndex: number - 1}), () => {
+                            this[scrolling] = false;
+                            this[previousTouchMove] = null;
+                        });
+                    }, this.props.animationTimer + 200)
+
+                }
+            }
         }
     };
 
