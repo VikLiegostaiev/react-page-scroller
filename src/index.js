@@ -168,6 +168,15 @@ export default class ReactPageScroller extends React.Component {
                     this.props.pageOnChange(number);
                 }
 
+                if (_.isNil(this["container_" + (number)]))
+                    this.state.componentsToRender.push(
+                        <div key={number + 1}
+                             ref={c => this["container_" + number] = c}
+                             style={{height: "100%", width: "100%"}}>
+                            {this.props.children[number]}
+                        </div>
+                    );
+
                 setTimeout(() => {
                     this.setState((prevState) => ({componentIndex: number - 1}), () => {
                         this[scrolling] = false;
@@ -178,10 +187,10 @@ export default class ReactPageScroller extends React.Component {
             } else if (!this[scrolling]) {
                 if (!_.isNil(this.props.children[number - 1])) {
 
-                    for (let i = 2; i < number; i++) {
+                    for (let i = this.state.componentsToRender.length; i <= number; i++) {
                         this.state.componentsToRender.push(
                             <div key={i + 1}
-                                 ref={c => this["container_" + (i)] = c}
+                                 ref={c => this["container_" + i] = c}
                                  style={{height: "100%", width: "100%"}}>
                                 {this.props.children[i]}
                             </div>
