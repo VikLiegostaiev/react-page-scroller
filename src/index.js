@@ -80,7 +80,7 @@ export default class ReactPageScroller extends React.Component {
 
     wheelScroll = (event) => {
 
-        if (event.wheelDeltaY > 0) {
+        if (event.deltaY < 0) {
             this.scrollWindowUp();
         } else {
             this.scrollWindowDown();
