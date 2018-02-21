@@ -1,6 +1,6 @@
 {
   "name": "react-page-scroller",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "Simple React component for smoothy full-page scolling",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -20,6 +20,7 @@
     "test:watch": "nwb test-react --server"
   },
   "dependencies": {
+    "babel-polyfill": "^6.26.0",
     "gh-pages": "^1.0.0",
     "lodash": "^4.17.4",
     "prop-types": "^15.6.0",
