@@ -142,6 +142,8 @@ export default class ReactPageScroller extends React.Component {
                 });
             }, this.props.animationTimer + 200)
 
+        } else if (this.props.scrollUnavailable) {
+            this.props.scrollUnavailable();
         }
 
     };

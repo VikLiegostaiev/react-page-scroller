@@ -47,7 +47,8 @@ goToPage = (pageNumber) => {
 | animationTimer  | number | Animation duration in milliseconds | 1000 |
 | transitionTimingFunction      | String | CSS transition timing function name | ease-in-out |
 | pageOnChange  | function | callback on page scroll | |
-| goToPage  | function | using with ref, go to selected page | |
+| goToPage  | function | using with ref, go to selected page, number of pages must start from 0 | |
+| scrollUnavailable  | function | callback, is calling when someone tries to scroll over last or first child component | |
 
 ## Dependencies
 
