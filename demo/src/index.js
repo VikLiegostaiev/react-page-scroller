@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import {Pagination} from "react-bootstrap";
+import _ from "lodash";
+import {Pager} from "react-bootstrap";
 
 import ReactPageScroller from "../../src/index";
 import FirstComponent from "./FirstComponent";
@@ -19,27 +20,43 @@ class Demo extends React.Component {
         this._pageScroller = null;
     }
 
-    goToPage = (number) => {
-        this._pageScroller.goToPage(number);
+    goToPage = (eventKey) => {
+        this._pageScroller.goToPage(eventKey);
     };
 
     pageOnChange = (number) => {
         this.setState({currentPage: number});
     };
 
+    getPagesNumbers = () => {
+
+        const pageNumbers = [];
+
+        for (let i = 1; i <= 5; i++) {
+            pageNumbers.push(
+                <Pager.Item key={i} eventKey={i} onSelect={this.goToPage}>{i}</Pager.Item>
+            )
+        }
+
+        return [...pageNumbers];
+    };
+
     render() {
 
-        return [
+        const pagesNumbers = this.getPagesNumbers();
+
+        return <React.Fragment>
             <ReactPageScroller ref={c => this._pageScroller = c} pageOnChange={this.pageOnChange}>
                 <FirstComponent/>
                 <SecondComponent/>
                 <ThirdComponent/>
                 <FourthComponent goToPage={this.goToPage}/>
                 <FifthComponent/>
-            </ReactPageScroller>,
-            <Pagination className="pagination-additional-class" bsSize="large" activePage={this.state.currentPage}
-                        onSelect={this.goToPage} items={5}/>
-        ]
+            </ReactPageScroller>
+            <Pager className="pagination-additional-class" bsSize="large">
+                {pagesNumbers}
+            </Pager>
+        </React.Fragment>
     }
 }
 

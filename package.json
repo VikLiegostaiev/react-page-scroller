@@ -1,6 +1,6 @@
 {
   "name": "react-page-scroller",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "description": "Simple React component for smoothy full-page scolling",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -21,15 +21,15 @@
   },
   "dependencies": {
     "babel-polyfill": "^6.26.0",
-    "gh-pages": "^1.0.0",
-    "lodash": "^4.17.4",
-    "prop-types": "^15.6.0",
-    "react": "^16.0.0",
-    "react-bootstrap": "^0.31.5",
-    "react-dom": "^16.0.0"
+    "gh-pages": "^1.1.0",
+    "lodash": "^4.17.5",
+    "prop-types": "^15.6.1",
+    "react": "^16.3.0",
+    "react-bootstrap": "^0.32.1",
+    "react-dom": "^16.3.0"
   },
   "devDependencies": {
-    "nwb": "0.19.x"
+    "nwb": "0.21.x"
   },
   "author": "Viktor Liegostaiev",
   "homepage": "https://vikliegostaiev.github.io/react-page-scroller/",

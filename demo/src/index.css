@@ -45,6 +45,6 @@ h2 {
     width: 100%;
 }
 
-.pagination-additional-class > li > a {
+.pagination-additional-class > li > a, .pagination-additional-class > li > span {
     margin-right: 50px;
 }
