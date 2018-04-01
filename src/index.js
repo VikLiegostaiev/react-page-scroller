@@ -172,10 +172,10 @@ export default class ReactPageScroller extends React.Component {
 
     goToPage = (number) => {
         if (!_.isEqual(this.state.componentIndex + 1, number)) {
-            if (!_.isNil(this["container_" + (number - 1)]) && !this[scrolling]) {
+            if (!_.isNil(this["container_" + (number)]) && !this[scrolling]) {
 
                 this[scrolling] = true;
-                this._pageContainer.style.transform = `translate3d(0, ${(number - 1) * -100}%, 0)`;
+                this._pageContainer.style.transform = `translate3d(0, ${(number) * -100}%, 0)`;
 
                 if (this.props.pageOnChange) {
                     this.props.pageOnChange(number);
@@ -201,7 +201,7 @@ export default class ReactPageScroller extends React.Component {
 
                 const componentsLength = this.state.componentsToRender.length;
 
-                for (let i = componentsLength; i < number; i++) {
+                for (let i = componentsLength; i <= number; i++) {
                     this.state.componentsToRender.push(
                         <div key={i + 1}
                              ref={c => this["container_" + i] = c}
@@ -212,14 +212,14 @@ export default class ReactPageScroller extends React.Component {
                 }
 
                 this[scrolling] = true;
-                this._pageContainer.style.transform = `translate3d(0, ${(number - 1) * -100}%, 0)`;
+                this._pageContainer.style.transform = `translate3d(0, ${(number) * -100}%, 0)`;
 
                 if (this.props.pageOnChange) {
                     this.props.pageOnChange(number);
                 }
 
                 setTimeout(() => {
-                    this.setState((prevState) => ({componentIndex: number - 1}), () => {
+                    this.setState((prevState) => ({componentIndex: number}), () => {
                         this[scrolling] = false;
                         this[previousTouchMove] = null;
                     });
@@ -253,7 +253,9 @@ export default class ReactPageScroller extends React.Component {
     static get propTypes() {
         return {
             animationTimer: PropTypes.number,
-            transitionTimingFunction: PropTypes.string
+            transitionTimingFunction: PropTypes.string,
+            pageOnChange: PropTypes.func,
+            scrollUnavailable: PropTypes.func
         }
     }
 

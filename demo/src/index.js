@@ -1,6 +1,5 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import _ from "lodash";
 import {Pager} from "react-bootstrap";
 
 import ReactPageScroller from "../../src/index";
@@ -34,7 +33,7 @@ class Demo extends React.Component {
 
         for (let i = 1; i <= 5; i++) {
             pageNumbers.push(
-                <Pager.Item key={i} eventKey={i} onSelect={this.goToPage}>{i}</Pager.Item>
+                <Pager.Item key={i} eventKey={i - 1} onSelect={this.goToPage}>{i}</Pager.Item>
             )
         }
 
