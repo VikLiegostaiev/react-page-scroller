@@ -173,7 +173,7 @@ export default class ReactPageScroller extends React.Component {
     };
 
     goToPage = (number) => {
-        if (!_.isEqual(this.state.componentIndex + 1, number)) {
+        if (!_.isEqual(this.state.componentIndex, number)) {
             if (!_.isNil(this["container_" + (number)]) && !this[scrolling]) {
 
                 this[scrolling] = true;
@@ -193,13 +193,13 @@ export default class ReactPageScroller extends React.Component {
                     );
 
                 setTimeout(() => {
-                    this.setState((prevState) => ({componentIndex: number - 1}), () => {
+                    this.setState((prevState) => ({componentIndex: number}), () => {
                         this[scrolling] = false;
                         this[previousTouchMove] = null;
                     });
                 }, this.props.animationTimer + 200)
 
-            } else if (!this[scrolling] && !_.isNil(this.props.children[number - 1])) {
+            } else if (!this[scrolling] && !_.isNil(this.props.children[number])) {
 
                 const componentsLength = this.state.componentsToRender.length;
 
