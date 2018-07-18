@@ -6,6 +6,11 @@ import _ from "lodash";
 const previousTouchMove = Symbol();
 const scrolling = Symbol();
 
+
+const ANIMATION_TIMER = 200;
+const KEY_UP = 38;
+const KEY_DOWN = 40;
+
 export default class ReactPageScroller extends React.Component {
 
     constructor(props) {
@@ -115,10 +120,10 @@ export default class ReactPageScroller extends React.Component {
 
     keyPress = (event) => {
 
-        if (_.isEqual(event.keyCode, 38)) {
+        if (_.isEqual(event.keyCode, KEY_UP)) {
             this.scrollWindowUp();
         }
-        if (_.isEqual(event.keyCode, 40)) {
+        if (_.isEqual(event.keyCode, KEY_DOWN)) {
             this.scrollWindowDown();
         }
 
@@ -140,7 +145,7 @@ export default class ReactPageScroller extends React.Component {
                     this[scrolling] = false;
                     this[previousTouchMove] = null;
                 });
-            }, this.props.animationTimer + 200)
+            }, this.props.animationTimer + ANIMATION_TIMER)
 
         } else if (this.props.scrollUnavailable) {
             this.props.scrollUnavailable();
@@ -197,7 +202,7 @@ export default class ReactPageScroller extends React.Component {
                         this[scrolling] = false;
                         this[previousTouchMove] = null;
                     });
-                }, this.props.animationTimer + 200)
+                }, this.props.animationTimer + ANIMATION_TIMER)
 
             } else if (!this[scrolling] && !_.isNil(this.props.children[number])) {
 
@@ -225,7 +230,7 @@ export default class ReactPageScroller extends React.Component {
                         this[scrolling] = false;
                         this[previousTouchMove] = null;
                     });
-                }, this.props.animationTimer + 200)
+                }, this.props.animationTimer + ANIMATION_TIMER)
 
             }
         }
