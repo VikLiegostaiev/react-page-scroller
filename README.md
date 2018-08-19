@@ -49,6 +49,8 @@ goToPage = (pageNumber) => {
 | pageOnChange  | function | callback on page scroll | |
 | goToPage  | function | using with ref, go to selected page, number of pages must start from 0 | |
 | scrollUnavailable  | function | callback, is calling when someone tries to scroll over last or first child component | |
+| containerHeight | number | height of react-page-scroller element | window.innerHeight |
+| containerWidth | number | width of react-page-scroller element | window.innerWidth |
 
 ## Dependencies
 
