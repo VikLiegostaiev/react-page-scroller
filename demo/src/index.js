@@ -1,62 +1,45 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import {Pager} from "react-bootstrap";
+import {
+    BrowserRouter as Router,
+    Route,
+    Switch,
+    Link
+} from "react-router-dom";
 
-import ReactPageScroller from "../../src/index";
-import FirstComponent from "./FirstComponent";
-import SecondComponent from "./SecondComponent";
-import ThirdComponent from "./ThirdComponent";
-import FourthComponent from "./FourthComponent";
-import FifthComponent from "./FifthComponent";
+import "./index.css";
+import FullPage from "./FullPage";
+import PageContain from "./PageContain";
 
 import "./index.css";
 
 class Demo extends React.Component {
-
-    constructor(props) {
-        super(props);
-        this.state = {currentPage: 1};
-        this._pageScroller = null;
-    }
-
-    goToPage = (eventKey) => {
-        this._pageScroller.goToPage(eventKey);
-    };
-
-    pageOnChange = (number) => {
-        this.setState({currentPage: number});
-    };
-
-    getPagesNumbers = () => {
-
-        const pageNumbers = [];
-
-        for (let i = 1; i <= 5; i++) {
-            pageNumbers.push(
-                <Pager.Item key={i} eventKey={i - 1} onSelect={this.goToPage}>{i}</Pager.Item>
-            )
-        }
-
-        return [...pageNumbers];
-    };
-
     render() {
-
-        const pagesNumbers = this.getPagesNumbers();
-
-        return <React.Fragment>
-            <ReactPageScroller ref={c => this._pageScroller = c} pageOnChange={this.pageOnChange}>
-                <FirstComponent/>
-                <SecondComponent/>
-                <ThirdComponent/>
-                <FourthComponent goToPage={this.goToPage}/>
-                <FifthComponent/>
-            </ReactPageScroller>
-            <Pager className="pagination-additional-class" bsSize="large">
-                {pagesNumbers}
-            </Pager>
-        </React.Fragment>
+        return (
+            <div>
+                <h1 className="title">React Page Scroller Demo</h1>
+                <div className="links">
+                    <div className="link">
+                        <Link to="/demos/fullpage">Full page demo</Link>
+                    </div>
+                    <div className="link">
+                        <Link to="/demos/contain">Page contain demo</Link>
+                    </div>
+                </div>
+            </div>
+        )
     }
 }
 
-ReactDOM.render(<Demo/>, document.getElementById("root"));
+ReactDOM.render(
+    <Router>
+        <div>
+            <Switch>
+                <Route exact path="/" component={Demo}/>
+                <Route path="/demos/fullpage" component={FullPage}/>
+                <Route path="/demos/contain" component={PageContain}/>
+            </Switch>
+        </div>
+    </Router>,
+    document.getElementById("root")
+);
