@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import {
-    BrowserRouter as Router,
+    HashRouter as Router,
     Route,
     Switch,
     Link
@@ -20,10 +20,10 @@ class Demo extends React.Component {
                 <h1 className="title">React Page Scroller Demo</h1>
                 <div className="links">
                     <div className="link">
-                        <Link to="/demos/fullpage">Full page demo</Link>
+                        <Link to="/fullpage">Full page demo</Link>
                     </div>
                     <div className="link">
-                        <Link to="/demos/contain">Page contain demo</Link>
+                        <Link to="/contain">Page contain demo</Link>
                     </div>
                 </div>
             </div>
@@ -32,12 +32,12 @@ class Demo extends React.Component {
 }
 
 ReactDOM.render(
-    <Router>
+    <Router basename="/demos">
         <div>
             <Switch>
                 <Route exact path="/" component={Demo}/>
-                <Route path="/demos/fullpage" component={FullPage}/>
-                <Route path="/demos/contain" component={PageContain}/>
+                <Route path="/fullpage" component={FullPage}/>
+                <Route path="/contain" component={PageContain}/>
             </Switch>
         </div>
     </Router>,
