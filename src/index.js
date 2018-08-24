@@ -18,6 +18,8 @@ const ANIMATION_TIMER = 200;
 const KEY_UP = 38;
 const KEY_DOWN = 40;
 
+const windowGlobal = typeof window !== 'undefined' && window
+
 export default class ReactPageScroller extends React.Component {
     static propTypes = {
         animationTimer: PropTypes.number,
@@ -31,8 +33,8 @@ export default class ReactPageScroller extends React.Component {
     static defaultProps = {
         animationTimer: 1000,
         transitionTimingFunction: "ease-in-out",
-        containerHeight: window.innerHeight,
-        containerWidth: window.innerWidth
+        containerHeight: windowGlobal.innerHeight,
+        containerWidth: windowGlobal.innerWidth
     };
 
     constructor(props) {
@@ -43,7 +45,7 @@ export default class ReactPageScroller extends React.Component {
     }
 
     componentDidMount = () => {
-        window.addEventListener('resize', this[onWindowResized]);
+        windowGlobal.addEventListener('resize', this[onWindowResized]);
 
         document.ontouchmove = (event) => {
             event.preventDefault();
@@ -76,7 +78,7 @@ export default class ReactPageScroller extends React.Component {
     };
 
     componentWillUnmount = () => {
-        window.removeEventListener('resize', this[onWindowResized]);
+        windowGlobal.removeEventListener('resize', this[onWindowResized]);
 
         this._pageContainer.removeEventListener("wheel", this[wheelScroll]);
         this._pageContainer.removeEventListener("touchmove", this[touchMove]);
