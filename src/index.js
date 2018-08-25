@@ -24,15 +24,15 @@ export default class ReactPageScroller extends React.Component {
         transitionTimingFunction: PropTypes.string,
         pageOnChange: PropTypes.func,
         scrollUnavailable: PropTypes.func,
-        containerHeight: PropTypes.number,
-        containerWidth: PropTypes.number
+        containerHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+        containerWidth: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
     };
 
     static defaultProps = {
         animationTimer: 1000,
         transitionTimingFunction: "ease-in-out",
-        containerHeight: window.innerHeight,
-        containerWidth: window.innerWidth
+        containerHeight: "100vh",
+        containerWidth: "100vw"
     };
 
     constructor(props) {
