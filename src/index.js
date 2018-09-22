@@ -12,6 +12,7 @@ const onWindowResized = Symbol();
 const addNextComponent = Symbol();
 const scrollWindowUp = Symbol();
 const scrollWindowDown = Symbol();
+const setRenderComponents = Symbol();
 
 
 const ANIMATION_TIMER = 200;
@@ -37,7 +38,7 @@ export default class ReactPageScroller extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {componentIndex: 0, componentsToRender: []};
+        this.state = { componentIndex: 0, componentsToRenderLength: 0 };
         this[previousTouchMove] = null;
         this[scrolling] = false;
     }
@@ -53,26 +54,15 @@ export default class ReactPageScroller extends React.Component {
         this._pageContainer.addEventListener("touchmove", this[touchMove]);
         this._pageContainer.addEventListener("keydown", this[keyPress]);
 
-        const componentsToRender = [];
+        let componentsToRenderLength = 0;
 
         if (!_.isNil(this.props.children[this.state.componentIndex])) {
-            componentsToRender.push(
-                <div key={this.state.componentIndex} ref={c => this["container_" + this.state.componentIndex] = c}
-                     style={{height: "100%", width: "100%"}}>
-                    {this.props.children[this.state.componentIndex]}
-                </div>
-            );
+            componentsToRenderLength++;
         } else {
-            componentsToRender.push(
-                <div ref={c => this["container_" + this.state.componentIndex] = c}
-                     style={{height: "100%", width: "100%"}}>
-                    {this.props.children}
-                </div>
-            );
+            componentsToRenderLength++;
         }
 
-        this[addNextComponent](componentsToRender);
-
+        this[addNextComponent](componentsToRenderLength);
     };
 
     componentWillUnmount = () => {
@@ -85,10 +75,10 @@ export default class ReactPageScroller extends React.Component {
     };
 
     goToPage = (number) => {
-        const {pageOnChange, children} = this.props;
-        const {componentIndex} = this.state;
+        const { pageOnChange, children } = this.props;
+        const { componentIndex, componentsToRenderLength } = this.state;
 
-        const componentsToRender = [...this.state.componentsToRender];
+        let newComponentsToRenderLength = componentsToRenderLength;
 
         if (!_.isEqual(componentIndex, number)) {
             if (!_.isNil(this["container_" + (number)]) && !this[scrolling]) {
@@ -100,49 +90,29 @@ export default class ReactPageScroller extends React.Component {
                     pageOnChange(number + 1);
                 }
 
-                if (_.isNil(this["container_" + (number + 1)]) && !_.isNil(children[number + 1]))
-                    componentsToRender.push(
-                        <div key={number + 1}
-                             ref={c => this["container_" + (number + 1)] = c}
-                             style={{height: "100%", width: "100%"}}>
-                            {children[number + 1]}
-                        </div>
-                    );
+                if (_.isNil(this["container_" + (number + 1)]) && !_.isNil(children[number + 1])) {
+                    newComponentsToRenderLength++;
+                }
 
                 setTimeout(() => {
-                    this.setState({componentIndex: number, componentsToRender: componentsToRender}, () => {
+                    this.setState({ componentIndex: number, componentsToRenderLength: newComponentsToRenderLength }, () => {
                         this[scrolling] = false;
                         this[previousTouchMove] = null;
                     });
                 }, this.props.animationTimer + ANIMATION_TIMER)
 
             } else if (!this[scrolling] && !_.isNil(children[number])) {
-
-                const componentsLength = componentsToRender.length;
-
-                for (let i = componentsLength; i <= number; i++) {
-                    componentsToRender.push(
-                        <div key={i}
-                             ref={c => this["container_" + i] = c}
-                             style={{height: "100%", width: "100%"}}>
-                            {children[i]}
-                        </div>
-                    );
+                for (let i = componentsToRenderLength; i <= number; i++) {
+                    newComponentsToRenderLength++;
                 }
 
                 if (!_.isNil(children[number + 1])) {
-                    componentsToRender.push(
-                        <div key={number + 1}
-                             ref={c => this["container_" + (number + 1)] = c}
-                             style={{height: "100%", width: "100%"}}>
-                            {children[number + 1]}
-                        </div>
-                    );
+                    newComponentsToRenderLength++
                 }
 
                 this[scrolling] = true;
                 this.setState({
-                    componentsToRender
+                    componentsToRenderLength: newComponentsToRenderLength
                 }, () => {
                     this._pageContainer.style.transform = `translate3d(0, ${(number) * -100}%, 0)`;
 
@@ -151,7 +121,7 @@ export default class ReactPageScroller extends React.Component {
                     }
 
                     setTimeout(() => {
-                        this.setState({componentIndex: number}, () => {
+                        this.setState({ componentIndex: number }, () => {
                             this[scrolling] = false;
                             this[previousTouchMove] = null;
                         });
@@ -162,10 +132,10 @@ export default class ReactPageScroller extends React.Component {
     };
 
     render() {
-        const {animationTimer, transitionTimingFunction, containerHeight, containerWidth} = this.props;
+        const { animationTimer, transitionTimingFunction, containerHeight, containerWidth } = this.props;
 
         return (
-            <div style={{height: containerHeight, width: containerWidth, overflow: "hidden"}}>
+            <div style={{ height: containerHeight, width: containerWidth, overflow: "hidden" }}>
                 <div ref={c => this._pageContainer = c}
                      style={{
                          height: "100%",
@@ -173,7 +143,7 @@ export default class ReactPageScroller extends React.Component {
                          transition: `transform ${animationTimer}ms ${transitionTimingFunction}`
                      }}
                      tabIndex={0}>
-                    {this.state.componentsToRender}
+                    {this[setRenderComponents]()}
                 </div>
             </div>
         )
@@ -213,72 +183,89 @@ export default class ReactPageScroller extends React.Component {
         this.forceUpdate();
     };
 
-    [addNextComponent] = (onMountedComponents) => {
-        let componentsToRender = [];
+    [addNextComponent] = (componentsToRenderOnMountLength) => {
+        let componentsToRenderLength = 0;
 
-        if (!_.isNil(onMountedComponents)) {
-            componentsToRender = [...onMountedComponents];
+        if (!_.isNil(componentsToRenderOnMountLength)) {
+            componentsToRenderLength = componentsToRenderOnMountLength;
         }
 
-        componentsToRender = [...componentsToRender, ...this.state.componentsToRender];
+        componentsToRenderLength = Math.max(componentsToRenderLength, this.state.componentsToRenderLength);
 
-        if (!componentsToRender[this.state.componentIndex + 1]) {
+        if (componentsToRenderLength <= this.state.componentIndex + 1) {
             if (!_.isNil(this.props.children[this.state.componentIndex + 1])) {
-                componentsToRender.push(
-                    <div key={this.state.componentIndex + 1}
-                         ref={c => this["container_" + (this.state.componentIndex + 1)] = c}
-                         style={{height: "100%", width: "100%"}}>
-                        {this.props.children[this.state.componentIndex + 1]}
-                    </div>
-                );
+                componentsToRenderLength++;
             }
         }
 
-        this.setState({componentsToRender: [...componentsToRender]});
+        this.setState({
+            componentsToRenderLength
+        });
+    };
+
+    [setRenderComponents] = () => {
+        const newComponentsToRender = [];
+
+        for (let i = 0; i < this.state.componentsToRenderLength; i++) {
+            if (!_.isNil(this.props.children[i])) {
+                newComponentsToRender.push(
+                    <div key={i} ref={c => this["container_" + i] = c}
+                         style={{ height: "100%", width: "100%" }}>
+                        {this.props.children[i]}
+                    </div>
+                );
+            } else {
+                break;
+            }
+        }
+
+        return newComponentsToRender;
     };
 
     [scrollWindowUp] = () => {
-        if (!_.isNil(this["container_" + (this.state.componentIndex - 1)]) && !this[scrolling]) {
+        if (!this[scrolling]) {
+            if (!_.isNil(this["container_" + (this.state.componentIndex - 1)])) {
+                this[scrolling] = true;
+                this._pageContainer.style.transform = `translate3d(0, ${(this.state.componentIndex - 1) * -100}%, 0)`;
 
-            this[scrolling] = true;
-            this._pageContainer.style.transform = `translate3d(0, ${(this.state.componentIndex - 1) * -100}%, 0)`;
+                if (this.props.pageOnChange) {
+                    this.props.pageOnChange(this.state.componentIndex);
+                }
 
-            if (this.props.pageOnChange) {
-                this.props.pageOnChange(this.state.componentIndex);
+                setTimeout(() => {
+                    this.setState((prevState) => ({ componentIndex: prevState.componentIndex - 1 }), () => {
+                        this[scrolling] = false;
+                        this[previousTouchMove] = null;
+                    });
+                }, this.props.animationTimer + ANIMATION_TIMER)
+
+            } else if (this.props.scrollUnavailable) {
+                this.props.scrollUnavailable();
             }
-
-            setTimeout(() => {
-                this.setState((prevState) => ({componentIndex: prevState.componentIndex - 1}), () => {
-                    this[scrolling] = false;
-                    this[previousTouchMove] = null;
-                });
-            }, this.props.animationTimer + ANIMATION_TIMER)
-
-        } else if (this.props.scrollUnavailable) {
-            this.props.scrollUnavailable();
         }
     };
 
     [scrollWindowDown] = () => {
-        if (!_.isNil(this["container_" + (this.state.componentIndex + 1)]) && !this[scrolling]) {
+        if (!this[scrolling]) {
+            if (!_.isNil(this["container_" + (this.state.componentIndex + 1)])) {
+                this[scrolling] = true;
+                this._pageContainer.style.transform = `translate3d(0, ${(this.state.componentIndex + 1) * -100}%, 0)`;
 
-            this[scrolling] = true;
-            this._pageContainer.style.transform = `translate3d(0, ${(this.state.componentIndex + 1) * -100}%, 0)`;
+                if (this.props.pageOnChange) {
+                    this.props.pageOnChange(this.state.componentIndex + 2);
+                }
 
-            if (this.props.pageOnChange) {
-                this.props.pageOnChange(this.state.componentIndex + 2);
+                setTimeout(() => {
+                    this.setState((prevState) => ({ componentIndex: prevState.componentIndex + 1 }), () => {
+                        this[scrolling] = false;
+                        this[previousTouchMove] = null;
+                        this[addNextComponent]();
+                    });
+                }, this.props.animationTimer + ANIMATION_TIMER)
+
+            } else if (this.props.scrollUnavailable) {
+                this.props.scrollUnavailable();
             }
-
-            setTimeout(() => {
-                this.setState((prevState) => ({componentIndex: prevState.componentIndex + 1}), () => {
-                    this[scrolling] = false;
-                    this[previousTouchMove] = null;
-                    this[addNextComponent]();
-                });
-            }, this.props.animationTimer + ANIMATION_TIMER)
-
-        } else if (this.props.scrollUnavailable) {
-            this.props.scrollUnavailable();
         }
     };
 }
