@@ -22,6 +22,7 @@ const KEY_DOWN = 40;
 export default class ReactPageScroller extends React.Component {
     static propTypes = {
         animationTimer: PropTypes.number,
+        initPage: PropTypes.number,
         transitionTimingFunction: PropTypes.string,
         pageOnChange: PropTypes.func,
         scrollUnavailable: PropTypes.func,
@@ -31,6 +32,7 @@ export default class ReactPageScroller extends React.Component {
 
     static defaultProps = {
         animationTimer: 1000,
+        initPage: 0,
         transitionTimingFunction: "ease-in-out",
         containerHeight: "100vh",
         containerWidth: "100vw"
@@ -57,9 +59,7 @@ export default class ReactPageScroller extends React.Component {
         let componentsToRenderLength = 0;
 
         if (!_.isNil(this.props.children[this.state.componentIndex])) {
-            componentsToRenderLength++;
-        } else {
-            componentsToRenderLength++;
+            componentsToRenderLength += this.state.componentIndex + 1;
         }
 
         this[addNextComponent](componentsToRenderLength);
@@ -137,12 +137,12 @@ export default class ReactPageScroller extends React.Component {
         return (
             <div style={{ height: containerHeight, width: containerWidth, overflow: "hidden" }}>
                 <div ref={c => this._pageContainer = c}
-                     style={{
-                         height: "100%",
-                         width: "100%",
-                         transition: `transform ${animationTimer}ms ${transitionTimingFunction}`
-                     }}
-                     tabIndex={0}>
+                    style={{
+                        height: "100%",
+                        width: "100%",
+                        transition: `transform ${animationTimer}ms ${transitionTimingFunction}`
+                    }}
+                    tabIndex={0}>
                     {this[setRenderComponents]()}
                 </div>
             </div>
@@ -200,6 +200,10 @@ export default class ReactPageScroller extends React.Component {
 
         this.setState({
             componentsToRenderLength
+        }, () => {
+            if (componentsToRenderOnMountLength) {
+                this.goToPage(this.props.initPage);
+            }
         });
     };
 
@@ -210,7 +214,7 @@ export default class ReactPageScroller extends React.Component {
             if (!_.isNil(this.props.children[i])) {
                 newComponentsToRender.push(
                     <div key={i} ref={c => this["container_" + i] = c}
-                         style={{ height: "100%", width: "100%" }}>
+                        style={{ height: "100%", width: "100%" }}>
                         {this.props.children[i]}
                     </div>
                 );

@@ -43,7 +43,7 @@ export default class FullPage extends React.Component {
         const pagesNumbers = this.getPagesNumbers();
 
         return <React.Fragment>
-            <ReactPageScroller ref={c => this._pageScroller = c} pageOnChange={this.pageOnChange}>
+            <ReactPageScroller ref={c => this._pageScroller = c} pageOnChange={this.pageOnChange} initPage={2}>
                 <FirstComponent/>
                 <SecondComponent/>
                 <ThirdComponent/>
