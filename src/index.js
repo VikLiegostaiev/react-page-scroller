@@ -50,7 +50,6 @@ export default class ReactPageScroller extends React.Component {
             event.preventDefault();
         };
 
-        this._pageContainer.addEventListener("wheel", this[wheelScroll]);
         this._pageContainer.addEventListener("touchmove", this[touchMove]);
         this._pageContainer.addEventListener("keydown", this[keyPress]);
 
@@ -68,7 +67,6 @@ export default class ReactPageScroller extends React.Component {
     componentWillUnmount = () => {
         window.removeEventListener('resize', this[onWindowResized]);
 
-        this._pageContainer.removeEventListener("wheel", this[wheelScroll]);
         this._pageContainer.removeEventListener("touchmove", this[touchMove]);
         this._pageContainer.removeEventListener("keydown", this[keyPress]);
 
@@ -137,6 +135,7 @@ export default class ReactPageScroller extends React.Component {
         return (
             <div style={{ height: containerHeight, width: containerWidth, overflow: "hidden" }}>
                 <div ref={c => this._pageContainer = c}
+                     onWheel={this[wheelScroll]}
                      style={{
                          height: "100%",
                          width: "100%",
