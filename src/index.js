@@ -22,7 +22,6 @@ const KEY_DOWN = 40;
 export default class ReactPageScroller extends React.Component {
     static propTypes = {
         animationTimer: PropTypes.number,
-        initPage: PropTypes.number,
         transitionTimingFunction: PropTypes.string,
         pageOnChange: PropTypes.func,
         scrollUnavailable: PropTypes.func,
@@ -32,7 +31,6 @@ export default class ReactPageScroller extends React.Component {
 
     static defaultProps = {
         animationTimer: 1000,
-        initPage: 0,
         transitionTimingFunction: "ease-in-out",
         containerHeight: "100vh",
         containerWidth: "100vw"
@@ -52,14 +50,15 @@ export default class ReactPageScroller extends React.Component {
             event.preventDefault();
         };
 
-        this._pageContainer.addEventListener("wheel", this[wheelScroll]);
         this._pageContainer.addEventListener("touchmove", this[touchMove]);
         this._pageContainer.addEventListener("keydown", this[keyPress]);
 
         let componentsToRenderLength = 0;
 
         if (!_.isNil(this.props.children[this.state.componentIndex])) {
-            componentsToRenderLength += this.state.componentIndex + 1;
+            componentsToRenderLength++;
+        } else {
+            componentsToRenderLength++;
         }
 
         this[addNextComponent](componentsToRenderLength);
@@ -68,7 +67,6 @@ export default class ReactPageScroller extends React.Component {
     componentWillUnmount = () => {
         window.removeEventListener('resize', this[onWindowResized]);
 
-        this._pageContainer.removeEventListener("wheel", this[wheelScroll]);
         this._pageContainer.removeEventListener("touchmove", this[touchMove]);
         this._pageContainer.removeEventListener("keydown", this[keyPress]);
 
@@ -137,12 +135,13 @@ export default class ReactPageScroller extends React.Component {
         return (
             <div style={{ height: containerHeight, width: containerWidth, overflow: "hidden" }}>
                 <div ref={c => this._pageContainer = c}
-                    style={{
-                        height: "100%",
-                        width: "100%",
-                        transition: `transform ${animationTimer}ms ${transitionTimingFunction}`
-                    }}
-                    tabIndex={0}>
+                     onWheel={this[wheelScroll]}
+                     style={{
+                         height: "100%",
+                         width: "100%",
+                         transition: `transform ${animationTimer}ms ${transitionTimingFunction}`
+                     }}
+                     tabIndex={0}>
                     {this[setRenderComponents]()}
                 </div>
             </div>
@@ -200,10 +199,6 @@ export default class ReactPageScroller extends React.Component {
 
         this.setState({
             componentsToRenderLength
-        }, () => {
-            if (componentsToRenderOnMountLength) {
-                this.goToPage(this.props.initPage);
-            }
         });
     };
 
@@ -214,7 +209,7 @@ export default class ReactPageScroller extends React.Component {
             if (!_.isNil(this.props.children[i])) {
                 newComponentsToRender.push(
                     <div key={i} ref={c => this["container_" + i] = c}
-                        style={{ height: "100%", width: "100%" }}>
+                         style={{ height: "100%", width: "100%" }}>
                         {this.props.children[i]}
                     </div>
                 );
