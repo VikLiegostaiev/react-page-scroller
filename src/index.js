@@ -3,19 +3,29 @@ import "babel-polyfill";
 import PropTypes from "prop-types"
 import _ from "lodash";
 
+import * as Events from "./Events";
+
 const previousTouchMove = Symbol();
 const scrolling = Symbol();
 const wheelScroll = Symbol();
 const touchMove = Symbol();
 const keyPress = Symbol();
-const onWindowResized = Symbol();
+const onWindowResize = Symbol();
 const addNextComponent = Symbol();
 const scrollWindowUp = Symbol();
 const scrollWindowDown = Symbol();
 const setRenderComponents = Symbol();
+const checkRenderOnMount = Symbol();
 
 
-const ANIMATION_TIMER = 200;
+const DEFAULT_ANIMATION_TIMER = 1000;
+const DEFAULT_ANIMATION = "ease-in-out";
+const DEFAULT_CONTAINER_HEIGHT = "100vh";
+const DEFAULT_CONTAINER_WIDTH = "100vw";
+const DEFAULT_COMPONENT_INDEX = 0;
+const DEFAULT_COMPONENTS_TO_RENDER_LENGTH = 0;
+
+const ANIMATION_TIMER_BUFFER = 200;
 const KEY_UP = 38;
 const KEY_DOWN = 40;
 
@@ -24,51 +34,43 @@ export default class ReactPageScroller extends React.Component {
         animationTimer: PropTypes.number,
         transitionTimingFunction: PropTypes.string,
         pageOnChange: PropTypes.func,
-        scrollUnavailable: PropTypes.func,
+        handleScrollUnavailable: PropTypes.func,
         containerHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
         containerWidth: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
     };
 
     static defaultProps = {
-        animationTimer: 1000,
-        transitionTimingFunction: "ease-in-out",
-        containerHeight: "100vh",
-        containerWidth: "100vw"
+        animationTimer: DEFAULT_ANIMATION_TIMER,
+        transitionTimingFunction: DEFAULT_ANIMATION,
+        containerHeight: DEFAULT_CONTAINER_HEIGHT,
+        containerWidth: DEFAULT_CONTAINER_WIDTH
     };
 
     constructor(props) {
         super(props);
-        this.state = { componentIndex: 0, componentsToRenderLength: 0 };
+        this.state = { componentIndex: DEFAULT_COMPONENT_INDEX, componentsToRenderLength: DEFAULT_COMPONENTS_TO_RENDER_LENGTH };
         this[previousTouchMove] = null;
         this[scrolling] = false;
     }
 
     componentDidMount = () => {
-        window.addEventListener('resize', this[onWindowResized]);
+        window.addEventListener(Events.RESIZE, this[onWindowResize]);
 
         document.ontouchmove = (event) => {
             event.preventDefault();
         };
 
-        this._pageContainer.addEventListener("touchmove", this[touchMove]);
-        this._pageContainer.addEventListener("keydown", this[keyPress]);
+        this._pageContainer.addEventListener(Events.TOUCHMOVE, this[touchMove]);
+        this._pageContainer.addEventListener(Events.KEYDOWN, this[keyPress]);
 
-        let componentsToRenderLength = 0;
-
-        if (!_.isNil(this.props.children[this.state.componentIndex])) {
-            componentsToRenderLength++;
-        } else {
-            componentsToRenderLength++;
-        }
-
-        this[addNextComponent](componentsToRenderLength);
+        this[checkRenderOnMount]();
     };
 
     componentWillUnmount = () => {
-        window.removeEventListener('resize', this[onWindowResized]);
+        window.removeEventListener(Events.RESIZE, this[onWindowResize]);
 
-        this._pageContainer.removeEventListener("touchmove", this[touchMove]);
-        this._pageContainer.removeEventListener("keydown", this[keyPress]);
+        this._pageContainer.removeEventListener(Events.TOUCHMOVE, this[touchMove]);
+        this._pageContainer.removeEventListener(Events.KEYDOWN, this[keyPress]);
 
     };
 
@@ -97,7 +99,7 @@ export default class ReactPageScroller extends React.Component {
                         this[scrolling] = false;
                         this[previousTouchMove] = null;
                     });
-                }, this.props.animationTimer + ANIMATION_TIMER)
+                }, this.props.animationTimer + ANIMATION_TIMER_BUFFER)
 
             } else if (!this[scrolling] && !_.isNil(children[number])) {
                 for (let i = componentsToRenderLength; i <= number; i++) {
@@ -123,7 +125,7 @@ export default class ReactPageScroller extends React.Component {
                             this[scrolling] = false;
                             this[previousTouchMove] = null;
                         });
-                    }, this.props.animationTimer + ANIMATION_TIMER)
+                    }, this.props.animationTimer + ANIMATION_TIMER_BUFFER)
                 });
             }
         }
@@ -178,7 +180,7 @@ export default class ReactPageScroller extends React.Component {
         }
     };
 
-    [onWindowResized] = () => {
+    [onWindowResize] = () => {
         this.forceUpdate();
     };
 
@@ -236,10 +238,10 @@ export default class ReactPageScroller extends React.Component {
                         this[scrolling] = false;
                         this[previousTouchMove] = null;
                     });
-                }, this.props.animationTimer + ANIMATION_TIMER)
+                }, this.props.animationTimer + ANIMATION_TIMER_BUFFER)
 
-            } else if (this.props.scrollUnavailable) {
-                this.props.scrollUnavailable();
+            } else if (this.props.handleScrollUnavailable) {
+                this.props.handleScrollUnavailable();
             }
         }
     };
@@ -260,11 +262,17 @@ export default class ReactPageScroller extends React.Component {
                         this[previousTouchMove] = null;
                         this[addNextComponent]();
                     });
-                }, this.props.animationTimer + ANIMATION_TIMER)
+                }, this.props.animationTimer + ANIMATION_TIMER_BUFFER)
 
-            } else if (this.props.scrollUnavailable) {
-                this.props.scrollUnavailable();
+            } else if (this.props.handleScrollUnavailable) {
+                this.props.handleScrollUnavailable();
             }
         }
     };
+
+    [checkRenderOnMount]() {
+        if (!_.isNil(this.props.children[DEFAULT_COMPONENT_INDEX])) {
+            this[addNextComponent](DEFAULT_COMPONENTS_TO_RENDER_LENGTH + 1);
+        }
+    }
 }
