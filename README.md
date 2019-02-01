@@ -51,6 +51,8 @@ goToPage = (pageNumber) => {
 | scrollUnavailable  | function | callback, is calling when someone tries to scroll over last or first child component | |
 | containerHeight | number/string | height of react-page-scroller element | 100vh |
 | containerWidth | number/string | width of react-page-scroller element | 100vw |
+| blockScrollUp | bool | block scroll up | false |
+| blockScrollDown | bool | block scroll up | false |
 
 ## Dependencies
 

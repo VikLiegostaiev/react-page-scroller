@@ -26,14 +26,18 @@ export default class ReactPageScroller extends React.Component {
         pageOnChange: PropTypes.func,
         scrollUnavailable: PropTypes.func,
         containerHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-        containerWidth: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
+        containerWidth: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+        blockScrollUp: PropTypes.bool,
+        blockScrollDown: PropTypes.bool
     };
 
     static defaultProps = {
         animationTimer: 1000,
         transitionTimingFunction: "ease-in-out",
         containerHeight: "100vh",
-        containerWidth: "100vw"
+        containerWidth: "100vw",
+        blockScrollUp: false,
+        blockScrollDown: false
     };
 
     constructor(props) {
@@ -222,7 +226,7 @@ export default class ReactPageScroller extends React.Component {
     };
 
     [scrollWindowUp] = () => {
-        if (!this[scrolling]) {
+        if (!this[scrolling] && !this.props.blockScrollUp) {
             if (!_.isNil(this["container_" + (this.state.componentIndex - 1)])) {
                 this[scrolling] = true;
                 this._pageContainer.style.transform = `translate3d(0, ${(this.state.componentIndex - 1) * -100}%, 0)`;
@@ -245,7 +249,7 @@ export default class ReactPageScroller extends React.Component {
     };
 
     [scrollWindowDown] = () => {
-        if (!this[scrolling]) {
+        if (!this[scrolling] && !this.props.blockScrollDown) {
             if (!_.isNil(this["container_" + (this.state.componentIndex + 1)])) {
                 this[scrolling] = true;
                 this._pageContainer.style.transform = `translate3d(0, ${(this.state.componentIndex + 1) * -100}%, 0)`;
