@@ -13,7 +13,7 @@ const addNextComponent = Symbol();
 const scrollWindowUp = Symbol();
 const scrollWindowDown = Symbol();
 const setRenderComponents = Symbol();
-
+const _isMounted = Symbol();
 
 const ANIMATION_TIMER = 200;
 const KEY_UP = 38;
@@ -45,11 +45,11 @@ export default class ReactPageScroller extends React.Component {
         this.state = { componentIndex: 0, componentsToRenderLength: 0 };
         this[previousTouchMove] = null;
         this[scrolling] = false;
-        this._isMounted = false;
+        this[_isMounted] = null;
     }
 
     componentDidMount = () => {
-        this._isMounted = true;
+        this[_isMounted] = true;
         
         window.addEventListener('resize', this[onWindowResized]);
 
@@ -72,7 +72,7 @@ export default class ReactPageScroller extends React.Component {
     };
 
     componentWillUnmount = () => {
-        this._isMounted = false;
+        this[_isMounted] = false;
         
         window.removeEventListener('resize', this[onWindowResized]);
         
@@ -243,7 +243,7 @@ export default class ReactPageScroller extends React.Component {
                 }
 
                 setTimeout(() => {
-                    this._isMounted && this.setState((prevState) => ({ componentIndex: prevState.componentIndex - 1 }), () => {
+                    this[_isMounted] && this.setState((prevState) => ({ componentIndex: prevState.componentIndex - 1 }), () => {
                         this[scrolling] = false;
                         this[previousTouchMove] = null;
                     });
@@ -266,7 +266,7 @@ export default class ReactPageScroller extends React.Component {
                 }
 
                 setTimeout(() => {
-                    this._isMounted && this.setState((prevState) => ({ componentIndex: prevState.componentIndex + 1 }), () => {
+                    this[_isMounted] && this.setState((prevState) => ({ componentIndex: prevState.componentIndex + 1 }), () => {
                         this[scrolling] = false;
                         this[previousTouchMove] = null;
                         this[addNextComponent]();
