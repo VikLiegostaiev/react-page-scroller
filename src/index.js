@@ -45,7 +45,7 @@ export default class ReactPageScroller extends React.Component {
         this.state = { componentIndex: 0, componentsToRenderLength: 0 };
         this[previousTouchMove] = null;
         this[scrolling] = false;
-        this[_isMounted] = null;
+        this[_isMounted] = false;
     }
 
     componentDidMount = () => {
