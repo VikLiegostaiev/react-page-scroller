@@ -260,8 +260,8 @@ export default class ReactPageScroller extends React.Component {
 
     [scrollWindowUp] = () => {
         if (!this[scrolling] && !this.props.blockScrollUp) {
-            this[disableScroll]()
             if (!_.isNil(this["container_" + (this.state.componentIndex - 1)])) {
+                this[disableScroll]()
                 this[scrolling] = true;
                 this._pageContainer.style.transform = `translate3d(0, ${(this.state.componentIndex - 1) * -100}%, 0)`;
 
@@ -287,8 +287,8 @@ export default class ReactPageScroller extends React.Component {
 
     [scrollWindowDown] = () => {
         if (!this[scrolling] && !this.props.blockScrollDown) {
-            this[disableScroll]()
             if (!_.isNil(this["container_" + (this.state.componentIndex + 1)])) {
+                this[disableScroll]()
                 this[scrolling] = true;
                 this._pageContainer.style.transform = `translate3d(0, ${(this.state.componentIndex + 1) * -100}%, 0)`;
 
