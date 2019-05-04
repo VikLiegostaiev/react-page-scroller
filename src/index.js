@@ -15,9 +15,14 @@ const scrollWindowDown = Symbol();
 const setRenderComponents = Symbol();
 const _isMounted = Symbol();
 
+const _isBodyScrollEnabled = Symbol();
+const disableScroll = Symbol();
+const enableScroll = Symbol();
+
 const ANIMATION_TIMER = 200;
 const KEY_UP = 38;
 const KEY_DOWN = 40;
+const DISABLED_CLASS_NAME "rps-scroll--disabled";
 
 export default class ReactPageScroller extends React.Component {
     static propTypes = {
@@ -46,6 +51,7 @@ export default class ReactPageScroller extends React.Component {
         this[previousTouchMove] = null;
         this[scrolling] = false;
         this[_isMounted] = false;
+        this[_isBodyScrollEnabled] = true;
     }
 
     componentDidMount = () => {
@@ -158,6 +164,26 @@ export default class ReactPageScroller extends React.Component {
             </div>
         )
     }
+    [disableScroll] = () => {
+        if (this[_isBodyScrollEnabled]) {
+          this[_isBodyScrollEnabled] = false
+          window.scrollTo({
+            left: 0,
+            top: 0,
+            behavior: 'smooth'
+          })
+          document.body.classList.add(DISABLED_CLASS_NAME)
+          document.documentElement.classList.add(DISABLED_CLASS_NAME)
+        }
+      }
+
+      [enableScroll] = () => {
+        if (!this[_isBodyScrollEnabled]) {
+          this[_isBodyScrollEnabled] = true
+          document.body.classList.remove(DISABLED_CLASS_NAME)
+          document.documentElement.classList.remove(DISABLED_CLASS_NAME)
+        }
+      }
 
     [wheelScroll] = (event) => {
         if (event.deltaY < 0) {
@@ -235,6 +261,7 @@ export default class ReactPageScroller extends React.Component {
     [scrollWindowUp] = () => {
         if (!this[scrolling] && !this.props.blockScrollUp) {
             if (!_.isNil(this["container_" + (this.state.componentIndex - 1)])) {
+                this[disableScroll]()
                 this[scrolling] = true;
                 this._pageContainer.style.transform = `translate3d(0, ${(this.state.componentIndex - 1) * -100}%, 0)`;
 
@@ -249,8 +276,11 @@ export default class ReactPageScroller extends React.Component {
                     });
                 }, this.props.animationTimer + ANIMATION_TIMER)
 
-            } else if (this.props.scrollUnavailable) {
-                this.props.scrollUnavailable();
+            } else {
+                this[enableScroll]()
+                if (this.props.scrollUnavailable) {
+                  this.props.scrollUnavailable()
+                }
             }
         }
     };
@@ -258,6 +288,7 @@ export default class ReactPageScroller extends React.Component {
     [scrollWindowDown] = () => {
         if (!this[scrolling] && !this.props.blockScrollDown) {
             if (!_.isNil(this["container_" + (this.state.componentIndex + 1)])) {
+                this[disableScroll]()
                 this[scrolling] = true;
                 this._pageContainer.style.transform = `translate3d(0, ${(this.state.componentIndex + 1) * -100}%, 0)`;
 
@@ -273,8 +304,11 @@ export default class ReactPageScroller extends React.Component {
                     });
                 }, this.props.animationTimer + ANIMATION_TIMER)
 
-            } else if (this.props.scrollUnavailable) {
-                this.props.scrollUnavailable();
+            } else {
+                this[enableScroll]()
+                if (this.props.scrollUnavailable) {
+                  this.props.scrollUnavailable()
+                }
             }
         }
     };
