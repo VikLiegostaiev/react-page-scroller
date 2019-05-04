@@ -22,7 +22,7 @@ const enableScroll = Symbol();
 const ANIMATION_TIMER = 200;
 const KEY_UP = 38;
 const KEY_DOWN = 40;
-const DISABLED_CLASS_NAME "rps-scroll--disabled";
+const DISABLED_CLASS_NAME = "rps-scroll--disabled";
 
 export default class ReactPageScroller extends React.Component {
     static propTypes = {
