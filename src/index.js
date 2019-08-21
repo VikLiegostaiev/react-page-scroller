@@ -1,7 +1,9 @@
 import React from "react";
-import "babel-polyfill";
 import PropTypes from "prop-types"
 import _ from "lodash";
+if (!global._babelPolyfill) {
+    require("babel-polyfill");
+}
 
 const previousTouchMove = Symbol();
 const scrolling = Symbol();
