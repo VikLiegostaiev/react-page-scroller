@@ -1,6 +1,9 @@
-# React Page Scroller
+# React Page Scroller (Alpha)
 
 Simple React component for smoothy full-page scolling.
+
+Announcement: 
+Soon will be released the new version with updated codebase, libs and fixed issues
 
 ### Demo
 
