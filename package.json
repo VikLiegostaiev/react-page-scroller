@@ -22,15 +22,18 @@
   "dependencies": {
     "babel-polyfill": "^6.26.0",
     "gh-pages": "^1.1.0",
-    "lodash": "^4.17.10",
+    "lodash": "^4.17.15",
     "prop-types": "^15.6.2",
-    "react": "^16.4.1",
+    "react": "^16.10.2",
     "react-bootstrap": "^0.32.1",
-    "react-dom": "^16.4.1",
+    "react-dom": "^16.10.2",
     "react-router-dom": "^4.3.1"
   },
   "devDependencies": {
-    "nwb": "0.22.x"
+    "eslint": "^6.6.0",
+    "eslint-plugin-prettier": "^3.1.1",
+    "nwb": "^0.23.0",
+    "prettier": "^1.18.2"
   },
   "author": "Viktor Liegostaiev",
   "homepage": "https://vikliegostaiev.github.io/react-page-scroller/",
