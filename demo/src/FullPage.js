@@ -1,7 +1,7 @@
 import React from "react";
-import {Pager} from "react-bootstrap";
+import { Pager } from "react-bootstrap";
 
-import ReactPageScroller from "../../src/index";
+import ReactPageScroller from "../../src/tempIndex";
 import FirstComponent from "./FirstComponent";
 import SecondComponent from "./SecondComponent";
 import ThirdComponent from "./ThirdComponent";
@@ -11,48 +11,52 @@ import FifthComponent from "./FifthComponent";
 import "./index.css";
 
 export default class FullPage extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {currentPage: 1};
-        this._pageScroller = null;
+  constructor(props) {
+    super(props);
+    this.state = { currentPage: null };
+  }
+
+  handlePageSelected = number => {
+    this.setState({ currentPage: number });
+  };
+
+  handlePageChange = number => {
+    console.log(number);
+  };
+
+  getPagesNumbers = () => {
+    const pageNumbers = [];
+
+    for (let i = 1; i <= 5; i++) {
+      pageNumbers.push(
+        <Pager.Item key={i} eventKey={i - 1} onSelect={this.handlePageSelected}>
+          {i}
+        </Pager.Item>,
+      );
     }
 
-    goToPage = (eventKey) => {
-        this._pageScroller.goToPage(eventKey);
-    };
+    return [...pageNumbers];
+  };
 
-    pageOnChange = (number) => {
-        this.setState({currentPage: number});
-    };
+  render() {
+    const pagesNumbers = this.getPagesNumbers();
 
-    getPagesNumbers = () => {
-
-        const pageNumbers = [];
-
-        for (let i = 1; i <= 5; i++) {
-            pageNumbers.push(
-                <Pager.Item key={i} eventKey={i - 1} onSelect={this.goToPage}>{i}</Pager.Item>
-            )
-        }
-
-        return [...pageNumbers];
-    };
-
-    render() {
-
-        const pagesNumbers = this.getPagesNumbers();
-
-        return <React.Fragment>
-            <ReactPageScroller ref={c => this._pageScroller = c} pageOnChange={this.pageOnChange}>
-                <FirstComponent/>
-                <SecondComponent/>
-                <ThirdComponent/>
-                <FourthComponent goToPage={this.goToPage}/>
-                <FifthComponent/>
-            </ReactPageScroller>
-            <Pager className="pagination-additional-class" bsSize="large">
-                {pagesNumbers}
-            </Pager>
-        </React.Fragment>
-    }
+    return (
+      <React.Fragment>
+        <ReactPageScroller
+          pageOnChange={this.handlePageChange}
+          customPageNumber={this.state.currentPage}
+        >
+          <FirstComponent />
+          <SecondComponent />
+          <ThirdComponent />
+          <FourthComponent />
+          <FifthComponent />
+        </ReactPageScroller>
+        <Pager className="pagination-additional-class" bsSize="large">
+          {pagesNumbers}
+        </Pager>
+      </React.Fragment>
+    );
+  }
 }
