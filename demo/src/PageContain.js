@@ -1,7 +1,7 @@
 import React from "react";
 import { Pager } from "react-bootstrap";
 
-import ReactPageScroller from "../../src/tempIndex";
+import ReactPageScroller from "../../src";
 import FirstComponent from "./FirstComponent";
 import SecondComponent from "./SecondComponent";
 import ThirdComponent from "./ThirdComponent";
@@ -13,7 +13,7 @@ import "./index.css";
 export default class PageContain extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { currentPage: 1 };
+    this.state = { currentPage: null };
   }
 
   handlePageChange = number => {
@@ -44,7 +44,7 @@ export default class PageContain extends React.Component {
           work
         </h3>
         <ReactPageScroller
-          pageOnChange={this.pageOnChange}
+          pageOnChange={this.handlePageChange}
           containerWidth={window.innerWidth * 0.4}
           containerHeight={window.innerHeight * 0.5}
           customPageNumber={this.state.currentPage}

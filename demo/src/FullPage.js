@@ -1,7 +1,7 @@
 import React from "react";
 import { Pager } from "react-bootstrap";
 
-import ReactPageScroller from "../../src/tempIndex";
+import ReactPageScroller from "../../src";
 import FirstComponent from "./FirstComponent";
 import SecondComponent from "./SecondComponent";
 import ThirdComponent from "./ThirdComponent";
@@ -16,12 +16,8 @@ export default class FullPage extends React.Component {
     this.state = { currentPage: null };
   }
 
-  handlePageSelected = number => {
-    this.setState({ currentPage: number });
-  };
-
   handlePageChange = number => {
-    console.log(number);
+    this.setState({ currentPage: number });
   };
 
   getPagesNumbers = () => {
@@ -29,7 +25,7 @@ export default class FullPage extends React.Component {
 
     for (let i = 1; i <= 5; i++) {
       pageNumbers.push(
-        <Pager.Item key={i} eventKey={i - 1} onSelect={this.handlePageSelected}>
+        <Pager.Item key={i} eventKey={i - 1} onSelect={this.handlePageChange}>
           {i}
         </Pager.Item>,
       );
