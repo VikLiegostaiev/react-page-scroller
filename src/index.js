@@ -74,10 +74,10 @@ const ReactPageScroller = ({
   const checkRenderOnMount = useCallback(() => {
     if (renderAllPagesOnFirstRender) {
       setComponentsToRenderLength(React.Children.count(children));
-    } else if (!isNil(children[DEFAULT_COMPONENT_INDEX])) {
+    } else if (!isNil(children[DEFAULT_COMPONENT_INDEX + 1])) {
       addNextComponent(DEFAULT_COMPONENTS_TO_RENDER_LENGTH + 1);
     }
-  }, [addNextComponent, children]);
+  }, [addNextComponent, children, renderAllPagesOnFirstRender]);
 
   const disableScroll = useCallback(() => {
     if (isBodyScrollEnabled) {
