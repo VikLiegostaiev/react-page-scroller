@@ -28,17 +28,18 @@ let isTransitionAfterComponentsToRenderChanged = false;
 const containers = [];
 
 const ReactPageScroller = ({
-                             animationTimer,
-                             blockScrollDown,
-                             blockScrollUp,
-                             children,
-                             containerHeight,
-                             containerWidth,
-                             customPageNumber,
-                             handleScrollUnavailable,
-                             pageOnChange,
-                             transitionTimingFunction,
-                           }) => {
+  animationTimer,
+  blockScrollDown,
+  blockScrollUp,
+  children,
+  containerHeight,
+  containerWidth,
+  customPageNumber,
+  handleScrollUnavailable,
+  pageOnChange,
+  renderAllPagesOnFirstRender,
+  transitionTimingFunction,
+}) => {
   const [componentIndex, setComponentIndex] = useState(DEFAULT_COMPONENT_INDEX);
   const [componentsToRenderLength, setComponentsToRenderLength] = useState(
     DEFAULT_COMPONENTS_TO_RENDER_LENGTH,
@@ -71,7 +72,9 @@ const ReactPageScroller = ({
   );
 
   const checkRenderOnMount = useCallback(() => {
-    if (!isNil(children[DEFAULT_COMPONENT_INDEX])) {
+    if (renderAllPagesOnFirstRender) {
+      setComponentsToRenderLength(React.Children.count(children));
+    } else if (!isNil(children[DEFAULT_COMPONENT_INDEX])) {
       addNextComponent(DEFAULT_COMPONENTS_TO_RENDER_LENGTH + 1);
     }
   }, [addNextComponent, children]);
@@ -134,7 +137,7 @@ const ReactPageScroller = ({
         isScrolling = true;
         pageContainer.current.style.transform = `translate3d(0, ${(componentIndex +
           1) *
-        -100}%, 0)`;
+          -100}%, 0)`;
 
         setTimeout(() => {
           if (isMounted) {
@@ -164,7 +167,7 @@ const ReactPageScroller = ({
         isScrolling = true;
         pageContainer.current.style.transform = `translate3d(0, ${(componentIndex -
           1) *
-        -100}%, 0)`;
+          -100}%, 0)`;
 
         setTimeout(() => {
           if (isMounted) {
@@ -235,7 +238,7 @@ const ReactPageScroller = ({
       pageContainer.current.removeEventListener(Events.TOUCHMOVE, touchMove);
       pageContainer.current.removeEventListener(Events.KEYDOWN, keyPress);
     };
-  }, [checkRenderOnMount, keyPress, touchMove]);
+  }, []);
 
   useEffect(() => {
     isScrolling = false;
@@ -252,8 +255,10 @@ const ReactPageScroller = ({
   }, [pageOnChange, componentIndex]);
 
   useEffect(() => {
-    if (!isNil(customPageNumber) &&
-      !isEqual(customPageNumber, componentIndex)) {
+    if (
+      !isNil(customPageNumber) &&
+      !isEqual(customPageNumber, componentIndex)
+    ) {
       let newComponentsToRenderLength = componentsToRenderLength;
 
       if (!isEqual(componentIndex, customPageNumber)) {
@@ -261,7 +266,7 @@ const ReactPageScroller = ({
           isScrolling = true;
           // eslint-disable-next-line max-len
           pageContainer.current.style.transform = `translate3d(0, ${customPageNumber *
-          -100}%, 0)`;
+            -100}%, 0)`;
 
           if (
             isNil(containers[customPageNumber]) &&
@@ -296,17 +301,13 @@ const ReactPageScroller = ({
       isTransitionAfterComponentsToRenderChanged = false;
 
       pageContainer.current.style.transform = `translate3d(0, ${customPageNumber *
-      -100}%, 0)`;
+        -100}%, 0)`;
 
       setTimeout(() => {
         setComponentIndex(customPageNumber);
       }, animationTimer + ANIMATION_TIMER_BUFFER);
     }
-  }, [
-    animationTimer,
-    componentsToRenderLength,
-    customPageNumber,
-  ]);
+  }, [animationTimer, componentsToRenderLength, customPageNumber]);
 
   return (
     <div
@@ -342,6 +343,7 @@ ReactPageScroller.propTypes = {
   customPageNumber: PropTypes.number,
   handleScrollUnavailable: PropTypes.func,
   pageOnChange: PropTypes.func,
+  renderAllPagesOnFirstRender: PropTypes.bool,
   transitionTimingFunction: PropTypes.string,
 };
 

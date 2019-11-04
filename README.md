@@ -43,6 +43,7 @@ Example is in demo/src.
 | customPageNumber | number | external selected page, number of pages should start from 0, should be combined with pageOnChange usage (see example in demo/src/FullPage.js for more information). This prop was introduced as a replacement for "goToPage" method from legacy version | |
 | handleScrollUnavailable  | function | callback, is calling when someone tries to scroll over last or first child component | |
 | pageOnChange  | function | callback after page was scrolled | |
+| renderAllPagesOnFirstRender  | bool | flag for render all pages at first render of component | |
 | transitionTimingFunction | String | CSS transition timing function name | ease-in-out |
 
 ## Dependencies
