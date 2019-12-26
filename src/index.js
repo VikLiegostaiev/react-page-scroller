@@ -100,18 +100,6 @@ const ReactPageScroller = ({
     }
   }, []);
 
-  const keyPress = useCallback(
-    event => {
-      if (isEqual(event.keyCode, KEY_UP)) {
-        scrollWindowUp();
-      }
-      if (isEqual(event.keyCode, KEY_DOWN)) {
-        scrollWindowDown();
-      }
-    },
-    [scrollWindowDown, scrollWindowUp],
-  );
-
   const setRenderComponents = useCallback(() => {
     const newComponentsToRender = [];
 
@@ -216,27 +204,33 @@ const ReactPageScroller = ({
     [scrollWindowDown, scrollWindowUp],
   );
 
+  const keyPress = useCallback(
+    event => {
+      if (isEqual(event.keyCode, KEY_UP)) {
+        scrollWindowUp();
+      }
+      if (isEqual(event.keyCode, KEY_DOWN)) {
+        scrollWindowDown();
+      }
+    },
+    [scrollWindowDown, scrollWindowUp],
+  );
+
+  useEffect(() => {
+    pageContainer.current.addEventListener(Events.TOUCHMOVE, touchMove);
+    pageContainer.current.addEventListener(Events.KEYDOWN, keyPress);
+    return () => {
+      pageContainer.current.removeEventListener(Events.TOUCHMOVE, touchMove);
+      pageContainer.current.removeEventListener(Events.KEYDOWN, keyPress);
+    };
+  }, [touchMove, keyPress]);
+
   useEffect(() => {
     isMounted = true;
 
-    document.ontouchmove = event => {
-      event.preventDefault();
-    };
-
-    pageContainer.current.addEventListener(Events.TOUCHMOVE, touchMove);
-    pageContainer.current.addEventListener(Events.KEYDOWN, keyPress);
-
     checkRenderOnMount();
-
     return () => {
       isMounted = false;
-
-      document.ontouchmove = e => {
-        return true;
-      };
-
-      pageContainer.current.removeEventListener(Events.TOUCHMOVE, touchMove);
-      pageContainer.current.removeEventListener(Events.KEYDOWN, keyPress);
     };
   }, []);
 
