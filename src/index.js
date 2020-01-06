@@ -318,6 +318,7 @@ const ReactPageScroller = ({
           height: "100%",
           width: "100%",
           transition: `transform ${animationTimer}ms ${transitionTimingFunction}`,
+          outline: "none"
         }}
         tabIndex={0}
       >
