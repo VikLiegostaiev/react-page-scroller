@@ -1,9 +1,8 @@
 name: Node.js Package
 
 on:
-  push:
-    branches:
-      - master
+  release:
+    types: [created]
 
 jobs:
   build:
@@ -29,7 +28,7 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
 
-  publish-gpr:
+  publish-ghp:
     needs: build
     runs-on: ubuntu-latest
     steps:
@@ -37,6 +36,6 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 12
-      - run: npm deploy
+      - run: npm run deploy
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
