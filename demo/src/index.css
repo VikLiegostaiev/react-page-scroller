@@ -82,3 +82,9 @@ h2 {
 .demo-page-contain__hint {
     margin-bottom: 20px;
 }
+
+@media (max-width: 768px) {
+    .pagination-additional-class > li:not(:last-of-type) > a, .pagination-additional-class > li:not(:last-of-type) > span {
+        margin-right: 5px;
+    }
+}
