@@ -103,4 +103,10 @@ h2 {
     margin-bottom: 20px;
 }
 
-/*# sourceMappingURL=demo.c19e6e44.css.map*/
+@media (max-width: 768px) {
+    .pagination-additional-class > li:not(:last-of-type) > a, .pagination-additional-class > li:not(:last-of-type) > span {
+        margin-right: 5px;
+    }
+}
+
+/*# sourceMappingURL=demo.f122c138.css.map*/
