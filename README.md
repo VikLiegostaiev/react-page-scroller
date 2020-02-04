@@ -2,7 +2,7 @@
 
 Simple React component for smoothy full-page scolling.
 
-### New beta version 2.0.5-beta released!!!
+### New beta version 2.0.6-beta released!!!
 
 ### Demo
 
