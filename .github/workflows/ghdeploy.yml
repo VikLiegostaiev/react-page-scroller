@@ -5,17 +5,26 @@ on:
       - master
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
+      - name: Checkout 🛎️
+        uses: actions/checkout@v1
+        uses: actions/setup-node@v1
         with:
           node-version: 12
-      - run: npm install
-      - run: git config --global user.email "${{secrets.user_email}}"
-      - run: git config --global user.name "${{secrets.user_name}}"
-      - run: npm run build
-      - run: npm run deploy
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+      - name: Install and Build 🔧
+        run: |
+          npm install
+          npm run build
+          npm run ghbuild
+
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@releases/v3
+        with:
+          GIT_CONFIG_NAME: ${{ secrets.user_name }}
+          GIT_CONFIG_EMAIL: ${{ secrets.user_email }}
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          BRANCH: gh-pages
+          FOLDER: demo/dist

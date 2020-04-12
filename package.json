@@ -13,7 +13,8 @@
   "scripts": {
     "build": "nwb build-react-component",
     "clean": "nwb clean-module && nwb clean-demo",
-    "deploy": "nwb build-demo && gh-pages -d demo/dist",
+    "ghbuild": "nwb build-demo",
+    "deploy": "npm run ghbuild && gh-pages -d demo/dist",
     "start": "nwb serve-react-demo",
     "test": "nwb test-react",
     "test:coverage": "nwb test-react --coverage",
