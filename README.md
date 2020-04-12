@@ -45,6 +45,7 @@ Example is in demo/src.
 | pageOnChange  | function | callback after page was scrolled | |
 | renderAllPagesOnFirstRender  | bool | flag for render all pages at first render of component | |
 | transitionTimingFunction | String | CSS transition timing function name | ease-in-out |
+| animationTimerBuffer | number | Animation buffer timing | 200 |
 
 ## Dependencies
 
