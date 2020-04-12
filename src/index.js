@@ -15,7 +15,7 @@ const DEFAULT_CONTAINER_WIDTH = "100vw";
 const DEFAULT_COMPONENT_INDEX = 0;
 const DEFAULT_COMPONENTS_TO_RENDER_LENGTH = 0;
 
-const ANIMATION_TIMER_BUFFER = 200;
+const DEFAULT_ANIMATION_TIMER_BUFFER = 200;
 const KEY_UP = 38;
 const KEY_DOWN = 40;
 const DISABLED_CLASS_NAME = "rps-scroll--disabled";
@@ -29,6 +29,7 @@ const containers = [];
 
 const ReactPageScroller = ({
   animationTimer,
+  animationTimerBuffer,
   blockScrollDown,
   blockScrollUp,
   children,
@@ -131,7 +132,7 @@ const ReactPageScroller = ({
           if (isMounted) {
             setComponentIndex(prevState => prevState + 1);
           }
-        }, animationTimer + ANIMATION_TIMER_BUFFER);
+        }, animationTimer + animationTimerBuffer);
       } else {
         enableDocumentScroll();
         if (handleScrollUnavailable) {
@@ -141,6 +142,7 @@ const ReactPageScroller = ({
     }
   }, [
     animationTimer,
+    animationTimerBuffer,
     blockScrollDown,
     componentIndex,
     disableScroll,
@@ -161,7 +163,7 @@ const ReactPageScroller = ({
           if (isMounted) {
             setComponentIndex(prevState => prevState - 1);
           }
-        }, animationTimer + ANIMATION_TIMER_BUFFER);
+        }, animationTimer + animationTimerBuffer);
       } else {
         enableDocumentScroll();
         if (handleScrollUnavailable) {
@@ -171,6 +173,7 @@ const ReactPageScroller = ({
     }
   }, [
     animationTimer,
+    animationTimerBuffer,
     blockScrollUp,
     componentIndex,
     disableScroll,
@@ -272,7 +275,7 @@ const ReactPageScroller = ({
           setTimeout(() => {
             setComponentIndex(customPageNumber);
             setComponentsToRenderLength(newComponentsToRenderLength);
-          }, animationTimer + ANIMATION_TIMER_BUFFER);
+          }, animationTimer + animationTimerBuffer);
         } else if (!isScrolling && !isNil(children[customPageNumber])) {
           for (let i = componentsToRenderLength; i <= customPageNumber; i++) {
             newComponentsToRenderLength++;
@@ -299,9 +302,14 @@ const ReactPageScroller = ({
 
       setTimeout(() => {
         setComponentIndex(customPageNumber);
-      }, animationTimer + ANIMATION_TIMER_BUFFER);
+      }, animationTimer + animationTimerBuffer);
     }
-  }, [animationTimer, componentsToRenderLength, customPageNumber]);
+  }, [
+    animationTimer,
+    animationTimerBuffer,
+    componentsToRenderLength,
+    customPageNumber,
+  ]);
 
   return (
     <div
@@ -318,7 +326,7 @@ const ReactPageScroller = ({
           height: "100%",
           width: "100%",
           transition: `transform ${animationTimer}ms ${transitionTimingFunction}`,
-          outline: "none"
+          outline: "none",
         }}
         tabIndex={0}
       >
@@ -330,6 +338,7 @@ const ReactPageScroller = ({
 
 ReactPageScroller.propTypes = {
   animationTimer: PropTypes.number,
+  animationTimerBuffer: PropTypes.number,
   blockScrollDown: PropTypes.bool,
   blockScrollUp: PropTypes.bool,
   children: PropTypes.any,
@@ -344,6 +353,7 @@ ReactPageScroller.propTypes = {
 
 ReactPageScroller.defaultProps = {
   animationTimer: DEFAULT_ANIMATION_TIMER,
+  animationTimerBuffer: DEFAULT_ANIMATION_TIMER_BUFFER,
   transitionTimingFunction: DEFAULT_ANIMATION,
   containerHeight: DEFAULT_CONTAINER_HEIGHT,
   containerWidth: DEFAULT_CONTAINER_WIDTH,
