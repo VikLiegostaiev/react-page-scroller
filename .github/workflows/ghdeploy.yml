@@ -13,6 +13,8 @@ jobs:
         with:
           node-version: 12
       - run: npm install
+      - run: git config user.email ${{secrets.user_email}}
+      - run: git config user.name ${{secrets.user_name}}
       - run: npm run build
       - run: npm run deploy
         env:
