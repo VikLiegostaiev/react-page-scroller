@@ -30,6 +30,7 @@ npm install react-page-scroller --save
 ## Usage
 
 Example is in demo/src.
+If you don't want to render the component insert null.
 
 # Properties
 
