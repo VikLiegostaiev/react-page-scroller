@@ -41,6 +41,7 @@ const ReactPageScroller = ({
   renderAllPagesOnFirstRender,
   transitionTimingFunction,
 }) => {
+  children = children.filter(clild => !isNil(clild));
   const [componentIndex, setComponentIndex] = useState(DEFAULT_COMPONENT_INDEX);
   const [componentsToRenderLength, setComponentsToRenderLength] = useState(
     DEFAULT_COMPONENTS_TO_RENDER_LENGTH,
@@ -106,7 +107,7 @@ const ReactPageScroller = ({
 
     let i = 0;
 
-    while (i < componentsToRenderLength && !isNil(children[i])) {
+    while (i < componentsToRenderLength) {
       containers[i] = true;
       newComponentsToRender.push(
         <div key={i} style={{ height: "100%", width: "100%" }}>
