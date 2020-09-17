@@ -29,6 +29,10 @@ npm install react-page-scroller --save
 
 ## Usage
 
+```
+import ReactPageScroller from 'react-page-scroller';
+```
+
 Example is in demo/src.
 
 # Properties
