@@ -41,7 +41,7 @@ Example is in demo/src.
 | -------------  | ---- |          -----------          | ------- |
 | animationTimer  | number | Animation duration in milliseconds | 1000 |
 | blockScrollUp | bool | block scroll up | false |
-| blockScrollDown | bool | block scroll up | false |
+| blockScrollDown | bool | block scroll down | false |
 | containerHeight | number/string | height of react-page-scroller element | 100vh |
 | containerWidth | number/string | width of react-page-scroller element | 100vw |
 | customPageNumber | number | external selected page, number of pages should start from 0, should be combined with pageOnChange usage (see example in demo/src/FullPage.js for more information). This prop was introduced as a replacement for "goToPage" method from legacy version | |
