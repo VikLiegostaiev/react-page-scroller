@@ -1,7 +1,8 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
-import { isEqual, isNil, isNull } from "lodash";
+
 import * as Events from "./Events";
+import { isNil, isNull, isPositiveNumber } from "./utils";
 import usePrevious from "./usePrevValue";
 
 if (!global._babelPolyfill) {
@@ -47,6 +48,7 @@ const ReactPageScroller = ({
   );
   const prevComponentIndex = usePrevious(componentIndex);
   const pageContainer = useRef(null);
+  const lastScrolledElement = useRef(null);
 
   const addNextComponent = useCallback(
     componentsToRenderOnMountLength => {
@@ -198,10 +200,14 @@ const ReactPageScroller = ({
 
   const wheelScroll = useCallback(
     event => {
-      if (event.deltaY < 0) {
-        scrollWindowUp();
-      } else {
-        scrollWindowDown();
+      if (Math.abs(event.deltaY) > 1) {
+        if (isPositiveNumber(event.deltaY)) {
+          lastScrolledElement.current = event.target;
+          scrollWindowDown();
+        } else {
+          lastScrolledElement.current = event.target;
+          scrollWindowUp();
+        }
       }
     },
     [scrollWindowDown, scrollWindowUp],
@@ -209,10 +215,10 @@ const ReactPageScroller = ({
 
   const keyPress = useCallback(
     event => {
-      if (isEqual(event.keyCode, KEY_UP)) {
+      if (event.keyCode === KEY_UP) {
         scrollWindowUp();
       }
-      if (isEqual(event.keyCode, KEY_DOWN)) {
+      if (event.keyCode === KEY_DOWN) {
         scrollWindowDown();
       }
     },
@@ -252,13 +258,10 @@ const ReactPageScroller = ({
   }, [pageOnChange, componentIndex]);
 
   useEffect(() => {
-    if (
-      !isNil(customPageNumber) &&
-      !isEqual(customPageNumber, componentIndex)
-    ) {
+    if (!isNil(customPageNumber) && customPageNumber !== componentIndex) {
       let newComponentsToRenderLength = componentsToRenderLength;
 
-      if (!isEqual(componentIndex, customPageNumber)) {
+      if (customPageNumber !== componentIndex) {
         if (!isNil(containers[customPageNumber]) && !isScrolling) {
           isScrolling = true;
           // eslint-disable-next-line max-len
