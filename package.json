@@ -1,6 +1,6 @@
 {
   "name": "react-page-scroller",
-  "version": "2.0.8-beta",
+  "version": "2.0.9-beta",
   "description": "Simple React component for smoothy full-page scolling",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -20,6 +20,7 @@
     "test:watch": "nwb test-react --server"
   },
   "dependencies": {
+    "babel-polyfill": "^6.26.0"
   },
   "peerDependencies": {
     "babel-polyfill": "^6.26.0",
@@ -32,7 +33,6 @@
     "@typescript-eslint/eslint-plugin": "^2.6.0",
     "@typescript-eslint/parser": "^2.6.0",
     "babel-eslint": "^10.0.3",
-    "babel-polyfill": "^6.26.0",
     "eslint": "^6.6.0",
     "eslint-config-react-app": "^5.0.2",
     "eslint-plugin-flowtype": "^3.13.0",
