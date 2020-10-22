@@ -44,6 +44,12 @@ export interface ReactPageScrollerProps {
    */
   handleScrollUnavailable?: () => void;
   /**
+   * Callback fired before new page started scrolling into view.
+   *
+   * @param {number} page The number of next page.
+   */
+  onBeforePageScroll?: (nextPage: number) => void;
+  /**
    * Callback fired when the selected page changes.
    *
    * @param {number} page The number of next page.

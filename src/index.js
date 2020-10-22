@@ -19,6 +19,7 @@ const DEFAULT_COMPONENTS_TO_RENDER_LENGTH = 0;
 const DEFAULT_ANIMATION_TIMER_BUFFER = 200;
 const KEY_UP = 38;
 const KEY_DOWN = 40;
+const MINIMAL_DELTA_Y_DIFFERENCE = 1;
 const DISABLED_CLASS_NAME = "rps-scroll--disabled";
 
 let previousTouchMove = null;
@@ -38,6 +39,7 @@ const ReactPageScroller = ({
   containerWidth,
   customPageNumber,
   handleScrollUnavailable,
+  onBeforePageScroll,
   pageOnChange,
   renderAllPagesOnFirstRender,
   transitionTimingFunction,
@@ -49,6 +51,18 @@ const ReactPageScroller = ({
   const prevComponentIndex = usePrevious(componentIndex);
   const pageContainer = useRef(null);
   const lastScrolledElement = useRef(null);
+
+  const scrollPage = useCallback(
+    nextComponentIndex => {
+      if (onBeforePageScroll) {
+        onBeforePageScroll(nextComponentIndex);
+      }
+
+      pageContainer.current.style.transform = `translate3d(0, ${nextComponentIndex *
+        -100}%, 0)`;
+    },
+    [onBeforePageScroll],
+  );
 
   const addNextComponent = useCallback(
     componentsToRenderOnMountLength => {
@@ -126,9 +140,7 @@ const ReactPageScroller = ({
       if (!isNil(containers[componentIndex + 1])) {
         disableScroll();
         isScrolling = true;
-        pageContainer.current.style.transform = `translate3d(0, ${(componentIndex +
-          1) *
-          -100}%, 0)`;
+        scrollPage(componentIndex + 1);
 
         setTimeout(() => {
           if (isMounted) {
@@ -150,6 +162,7 @@ const ReactPageScroller = ({
     disableScroll,
     enableDocumentScroll,
     handleScrollUnavailable,
+    scrollPage,
   ]);
 
   const scrollWindowUp = useCallback(() => {
@@ -157,9 +170,7 @@ const ReactPageScroller = ({
       if (!isNil(containers[componentIndex - 1])) {
         disableScroll();
         isScrolling = true;
-        pageContainer.current.style.transform = `translate3d(0, ${(componentIndex -
-          1) *
-          -100}%, 0)`;
+        scrollPage(componentIndex - 1);
 
         setTimeout(() => {
           if (isMounted) {
@@ -181,6 +192,7 @@ const ReactPageScroller = ({
     disableScroll,
     enableDocumentScroll,
     handleScrollUnavailable,
+    scrollPage,
   ]);
 
   const touchMove = useCallback(
@@ -200,7 +212,7 @@ const ReactPageScroller = ({
 
   const wheelScroll = useCallback(
     event => {
-      if (Math.abs(event.deltaY) > 1) {
+      if (Math.abs(event.deltaY) > MINIMAL_DELTA_Y_DIFFERENCE) {
         if (isPositiveNumber(event.deltaY)) {
           lastScrolledElement.current = event.target;
           scrollWindowDown();
@@ -265,8 +277,7 @@ const ReactPageScroller = ({
         if (!isNil(containers[customPageNumber]) && !isScrolling) {
           isScrolling = true;
           // eslint-disable-next-line max-len
-          pageContainer.current.style.transform = `translate3d(0, ${customPageNumber *
-            -100}%, 0)`;
+          scrollPage(customPageNumber);
 
           if (
             isNil(containers[customPageNumber]) &&
@@ -294,14 +305,13 @@ const ReactPageScroller = ({
         }
       }
     }
-  }, [customPageNumber]);
+  }, [customPageNumber, scrollPage]);
 
   useEffect(() => {
     if (isTransitionAfterComponentsToRenderChanged) {
       isTransitionAfterComponentsToRenderChanged = false;
 
-      pageContainer.current.style.transform = `translate3d(0, ${customPageNumber *
-        -100}%, 0)`;
+      scrollPage(customPageNumber);
 
       setTimeout(() => {
         setComponentIndex(customPageNumber);
@@ -312,6 +322,7 @@ const ReactPageScroller = ({
     animationTimerBuffer,
     componentsToRenderLength,
     customPageNumber,
+    scrollPage,
   ]);
 
   return (
@@ -349,6 +360,7 @@ ReactPageScroller.propTypes = {
   containerWidth: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   customPageNumber: PropTypes.number,
   handleScrollUnavailable: PropTypes.func,
+  onBeforePageScroll: PropTypes.func,
   pageOnChange: PropTypes.func,
   renderAllPagesOnFirstRender: PropTypes.bool,
   transitionTimingFunction: PropTypes.string,
