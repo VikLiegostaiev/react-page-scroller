@@ -49,6 +49,7 @@ const ReactPageScroller = ({
     DEFAULT_COMPONENTS_TO_RENDER_LENGTH,
   );
   const prevComponentIndex = usePrevious(componentIndex);
+  const scrollContainer = useRef(null);
   const pageContainer = useRef(null);
   const lastScrolledElement = useRef(null);
 
@@ -238,11 +239,11 @@ const ReactPageScroller = ({
   );
 
   useEffect(() => {
-    pageContainer.current.addEventListener(Events.TOUCHMOVE, touchMove);
-    pageContainer.current.addEventListener(Events.KEYDOWN, keyPress);
+    scrollContainer.current.addEventListener(Events.TOUCHMOVE, touchMove);
+    scrollContainer.current.addEventListener(Events.KEYDOWN, keyPress);
     return () => {
-      pageContainer.current.removeEventListener(Events.TOUCHMOVE, touchMove);
-      pageContainer.current.removeEventListener(Events.KEYDOWN, keyPress);
+      scrollContainer.current.removeEventListener(Events.TOUCHMOVE, touchMove);
+      scrollContainer.current.removeEventListener(Events.KEYDOWN, keyPress);
     };
   }, [touchMove, keyPress]);
 
@@ -327,6 +328,7 @@ const ReactPageScroller = ({
 
   return (
     <div
+      ref={scrollContainer}
       style={{
         height: containerHeight,
         width: containerWidth,
