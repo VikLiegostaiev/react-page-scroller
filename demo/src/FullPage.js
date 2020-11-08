@@ -17,7 +17,11 @@ export default class FullPage extends React.Component {
   }
 
   handlePageChange = number => {
-    this.setState({ currentPage: number }); // set currentPage number, to reset it from the previous selected.
+    this.setState({ currentPage: number });
+  };
+
+  handleBeforePageChange = number => {
+    console.log(number);
   };
 
   getPagesNumbers = () => {
@@ -41,6 +45,7 @@ export default class FullPage extends React.Component {
       <React.Fragment>
         <ReactPageScroller
           pageOnChange={this.handlePageChange}
+          onBeforePageScroll={this.handleBeforePageChange}
           customPageNumber={this.state.currentPage}
         >
           <FirstComponent />

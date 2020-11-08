@@ -49,7 +49,7 @@ Example is in demo/src.
 | renderAllPagesOnFirstRender  | bool | flag for render all pages at first render of component | |
 | transitionTimingFunction | String | CSS transition timing function name | ease-in-out |
 | handleScrollUnavailable  | function | callback, is calling when someone tries to scroll over last or first child component | |
-| onBeforePageScroll  | function | callback before page scroll occured | |
+| onBeforePageScroll  | function | callback before page scroll occured (passes the index of next page in argument) | |
 | pageOnChange  | function | callback after page was scrolled | |
 
 ## Dependencies
