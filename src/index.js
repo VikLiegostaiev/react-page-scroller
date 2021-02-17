@@ -30,20 +30,20 @@ let isTransitionAfterComponentsToRenderChanged = false;
 const containers = [];
 
 const ReactPageScroller = ({
-                             animationTimer,
-                             animationTimerBuffer,
-                             blockScrollDown,
-                             blockScrollUp,
-                             children,
-                             containerHeight,
-                             containerWidth,
-                             customPageNumber,
-                             handleScrollUnavailable,
-                             onBeforePageScroll,
-                             pageOnChange,
-                             renderAllPagesOnFirstRender,
-                             transitionTimingFunction,
-                           }) => {
+  animationTimer,
+  animationTimerBuffer,
+  blockScrollDown,
+  blockScrollUp,
+  children,
+  containerHeight,
+  containerWidth,
+  customPageNumber,
+  handleScrollUnavailable,
+  onBeforePageScroll,
+  pageOnChange,
+  renderAllPagesOnFirstRender,
+  transitionTimingFunction,
+}) => {
   const [componentIndex, setComponentIndex] = useState(DEFAULT_COMPONENT_INDEX);
   const [componentsToRenderLength, setComponentsToRenderLength] = useState(
     DEFAULT_COMPONENTS_TO_RENDER_LENGTH,
@@ -60,7 +60,7 @@ const ReactPageScroller = ({
       }
 
       pageContainer.current.style.transform = `translate3d(0, ${nextComponentIndex *
-      -100}%, 0)`;
+        -100}%, 0)`;
     },
     [onBeforePageScroll],
   );
