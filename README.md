@@ -1,8 +1,6 @@
-# React Page Scroller (Beta)
+# React Page Scroller
 
 Simple React component for smoothy full-page scolling.
-
-### New beta version 2.0.10-beta released!!!
 
 ### Demo
 
