@@ -1,4 +1,10 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  useMemo,
+} from "react";
 import PropTypes from "prop-types";
 
 import * as Events from "./Events";
@@ -52,6 +58,7 @@ const ReactPageScroller = ({
   const scrollContainer = useRef(null);
   const pageContainer = useRef(null);
   const lastScrolledElement = useRef(null);
+  children = useMemo(() => React.Children.toArray(children), [children]);
 
   const scrollPage = useCallback(
     nextComponentIndex => {
