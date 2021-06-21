@@ -246,11 +246,12 @@ const ReactPageScroller = ({
   );
 
   useEffect(() => {
-    scrollContainer.current.addEventListener(Events.TOUCHMOVE, touchMove);
-    scrollContainer.current.addEventListener(Events.KEYDOWN, keyPress);
+    const instance = scrollContainer.current;
+    instance.addEventListener(Events.TOUCHMOVE, touchMove);
+    instance.addEventListener(Events.KEYDOWN, keyPress);
     return () => {
-      scrollContainer.current.removeEventListener(Events.TOUCHMOVE, touchMove);
-      scrollContainer.current.removeEventListener(Events.KEYDOWN, keyPress);
+      instance.removeEventListener(Events.TOUCHMOVE, touchMove);
+      instance.removeEventListener(Events.KEYDOWN, keyPress);
     };
   }, [touchMove, keyPress]);
 
