@@ -1,6 +1,6 @@
 {
   "name": "react-page-scroller",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "Simple React component for smoothy full-page scolling",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -24,8 +24,8 @@
   },
   "peerDependencies": {
     "babel-polyfill": "^6.26.0",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
+    "react": "^17.0.0",
+    "react-dom": "^17.0.0",
     "react-router-dom": "^4.3.1",
     "prop-types": "^15.6.2"
   },
@@ -44,9 +44,9 @@
     "gh-pages": "^1.1.0",
     "nwb": "^0.25.2",
     "prettier": "^1.18.2",
-    "react": "^16.13.1",
+    "react": "^17.0.0",
     "react-bootstrap": "^0.32.1",
-    "react-dom": "^16.13.1",
+    "react-dom": "^17.0.0",
     "react-router-dom": "^4.3.1"
   },
   "author": "Viktor Liegostaiev",
