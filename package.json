@@ -1,16 +1,17 @@
 {
   "name": "react-page-scroller",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "Simple React component for smoothy full-page scolling",
   "main": "lib/index.js",
   "module": "es/index.js",
+  "types": "lib/index.d.ts",
   "files": [
     "es",
     "lib",
     "umd"
   ],
   "scripts": {
-    "build": "nwb build-react-component",
+    "build": "nwb build-react-component && cp ./src/index.d.ts ./lib",
     "clean": "nwb clean-module && nwb clean-demo",
     "ghbuild": "nwb build-demo",
     "deploy": "npm run ghbuild && gh-pages -d demo/dist",
