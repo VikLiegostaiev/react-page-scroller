@@ -15,3 +15,11 @@
 - `npm run build` will build the component for publishing to npm and also bundle the demo app.
 
 - `npm run clean` will delete built resources.
+
+## Publishing
+
+Publishing will be done automatically after release will be published in GitHub. It calls GitHub action. 
+
+## Deploy GitHub pages
+
+Deploy to GitHub pages will be done automatically after push into master.
