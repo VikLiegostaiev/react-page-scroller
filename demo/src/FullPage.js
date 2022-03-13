@@ -49,7 +49,7 @@ export default class FullPage extends React.Component {
           customPageNumber={this.state.currentPage}
         >
           <FirstComponent />
-          <SecondComponent />
+          <SecondComponent height={50}/>
           <ThirdComponent />
           <FourthComponent />
           <FifthComponent />

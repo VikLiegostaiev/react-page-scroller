@@ -60,14 +60,19 @@ const ReactPageScroller = ({
   const lastScrolledElement = useRef(null);
   children = useMemo(() => React.Children.toArray(children), [children]);
 
+  const positions = useMemo(() => children.reduce((_positions, _children) => {
+    const lastElement = _positions.slice(-1)
+    const height = _children.props.height ? parseInt(_children.props.height) : 100
+    return _positions.concat([lastElement - height])
+  }, [0]), [children])
+
   const scrollPage = useCallback(
     nextComponentIndex => {
       if (onBeforePageScroll) {
         onBeforePageScroll(nextComponentIndex);
       }
 
-      pageContainer.current.style.transform = `translate3d(0, ${nextComponentIndex *
-        -100}%, 0)`;
+      pageContainer.current.style.transform = `translate3d(0, ${positions[nextComponentIndex]}%, 0)`;
     },
     [onBeforePageScroll],
   );
@@ -133,7 +138,7 @@ const ReactPageScroller = ({
     while (i < componentsToRenderLength && !isNil(children[i])) {
       containers[i] = true;
       newComponentsToRender.push(
-        <div key={i} style={{ height: "100%", width: "100%" }}>
+        <div key={i} style={{ height: `${parseInt(children[i].props.height) || 100}%`, width: "100%" }}>
           {React.cloneElement(children[i], { ...children[i].props })}
         </div>,
       );
