@@ -68,3 +68,10 @@ export interface ReactPageScrollerProps {
 export default function ReactPageScroller(
   props: ReactPageScrollerProps,
 ): JSX.Element;
+
+export interface SectionContainerProps {
+  children: React.ReactNode;
+  height: string;
+}
+
+export function SectionContainer(props: SectionContainerProps): JSX.Element;
