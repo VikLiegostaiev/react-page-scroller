@@ -4,7 +4,7 @@ export const SectionContainer = ({ children, height }) => {
   return (
     <div
       style={{
-        height: height || "100%",
+        height: `${height ?? 100}%`,
         width: "100%",
       }}
     >
