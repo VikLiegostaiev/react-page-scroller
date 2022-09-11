@@ -2,7 +2,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - master
+      - fix-gh-deploy
 
 jobs:
   build-and-deploy:
@@ -20,10 +20,10 @@ jobs:
           npm run ghbuild
 
       - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@releases/v3
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
-          GIT_CONFIG_NAME: ${{ secrets.user_name }}
-          GIT_CONFIG_EMAIL: ${{ secrets.user_email }}
-          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-          BRANCH: gh-pages
-          FOLDER: demo/dist
+          git-config-name: ${{ secrets.USER_NAME }}
+          git-config-email: ${{ secrets.USER_EMAIL }}
+          token: ${{ secrets.ACCESS_TOKEN }}
+          branch: gh-pages
+          folder: demo/dist
