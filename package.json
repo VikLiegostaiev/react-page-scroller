@@ -1,6 +1,6 @@
 {
   "name": "react-page-scroller",
-  "version": "2.3.0",
+  "version": "2.3.1",
   "description": "Simple React component for smoothy full-page scolling",
   "main": "lib/index.js",
   "module": "es/index.js",

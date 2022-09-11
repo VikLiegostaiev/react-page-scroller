@@ -147,13 +147,13 @@ export const ReactPageScroller = ({
 
     while (i < componentsToRenderLength && !isNil(children[i])) {
       containersRef.current[i] = true;
-      if (children[i].type.name !== "SectionContainer") {
+      if (children[i].type.name === SectionContainer.name) {
         newComponentsToRender.push(
-          <SectionContainer key={i}>{children[i]}</SectionContainer>,
+          <React.Fragment key={i}>{children[i]}</React.Fragment>,
         );
       } else {
         newComponentsToRender.push(
-          <React.Fragment key={i}>{children[i]}</React.Fragment>,
+          <SectionContainer key={i}>{children[i]}</SectionContainer>,
         );
       }
       i++;
