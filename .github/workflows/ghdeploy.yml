@@ -2,7 +2,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - fix-gh-deploy
+      - master
 
 jobs:
   build-and-deploy:
