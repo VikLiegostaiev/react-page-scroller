@@ -5,12 +5,6 @@
   ],
   "rules": {
     "prettier/prettier": "error",
-    "max-len": [
-      "error",
-      {
-        "code": 84
-      }
-    ],
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn"
   }

@@ -1,7 +1,7 @@
 import React from "react";
 import { Pager } from "react-bootstrap";
 
-import ReactPageScroller from "../../src";
+import ReactPageScroller, { SectionContainer } from "../../src";
 import FirstComponent from "./FirstComponent";
 import SecondComponent from "./SecondComponent";
 import ThirdComponent from "./ThirdComponent";
@@ -50,7 +50,9 @@ export default class PageContain extends React.Component {
           customPageNumber={this.state.currentPage}
         >
           <FirstComponent />
-          <SecondComponent />
+          <SectionContainer height="50%">
+            <SecondComponent />
+          </SectionContainer>
           <ThirdComponent />
           <FourthComponent />
           <FifthComponent />
