@@ -1,10 +1,10 @@
 import React from "react";
 
-export const SectionContainer = ({ children, height }) => {
+export const SectionContainer = ({ children, height = 100 }) => {
   return (
     <div
       style={{
-        height: `${height ?? 100}%`,
+        height: `${height}%`,
         width: "100%",
       }}
     >

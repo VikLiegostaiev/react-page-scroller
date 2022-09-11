@@ -50,6 +50,14 @@ Example is in demo/src.
 | onBeforePageScroll  | function | callback before page scroll occured (passes the index of next page in argument) | |
 | pageOnChange  | function | callback after page was scrolled | |
 
+
+### SectionContainer component
+
+| Property | Type | Description                        | Default Value |
+|----------| ---- |------------------------------------|---------------|
+| height   | number | height in percentage (i.e. 20, 50) | 100           |
+
+
 ## Dependencies
 
 react-page-scroller requires:
