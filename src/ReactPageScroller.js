@@ -31,10 +31,8 @@ const DISABLED_CLASS_NAME = "rps-scroll--disabled";
 
 let previousTouchMove = null;
 let isScrolling = false;
-let isMounted = false;
 let isBodyScrollEnabled = true;
 let isTransitionAfterComponentsToRenderChanged = false;
-const containers = [];
 
 export const ReactPageScroller = ({
   animationTimer,
@@ -59,6 +57,8 @@ export const ReactPageScroller = ({
   const scrollContainer = useRef(null);
   const pageContainer = useRef(null);
   const lastScrolledElement = useRef(null);
+  const isMountedRef = useRef(false);
+  const containersRef = useRef([]);
   children = useMemo(() => React.Children.toArray(children), [children]);
 
   const positions = useMemo(
@@ -146,7 +146,7 @@ export const ReactPageScroller = ({
     let i = 0;
 
     while (i < componentsToRenderLength && !isNil(children[i])) {
-      containers[i] = true;
+      containersRef.current[i] = true;
       if (children[i].type.name !== "SectionContainer") {
         newComponentsToRender.push(
           <SectionContainer key={i}>{children[i]}</SectionContainer>,
@@ -164,13 +164,13 @@ export const ReactPageScroller = ({
 
   const scrollWindowDown = useCallback(() => {
     if (!isScrolling && !blockScrollDown) {
-      if (!isNil(containers[componentIndex + 1])) {
+      if (!isNil(containersRef.current[componentIndex + 1])) {
         disableScroll();
         isScrolling = true;
         scrollPage(componentIndex + 1);
 
         setTimeout(() => {
-          if (isMounted) {
+          if (isMountedRef.current) {
             setComponentIndex(prevState => prevState + 1);
           }
         }, animationTimer + animationTimerBuffer);
@@ -194,13 +194,13 @@ export const ReactPageScroller = ({
 
   const scrollWindowUp = useCallback(() => {
     if (!isScrolling && !blockScrollUp) {
-      if (!isNil(containers[componentIndex - 1])) {
+      if (!isNil(containersRef.current[componentIndex - 1])) {
         disableScroll();
         isScrolling = true;
         scrollPage(componentIndex - 1);
 
         setTimeout(() => {
-          if (isMounted) {
+          if (isMountedRef.current) {
             setComponentIndex(prevState => prevState - 1);
           }
         }, animationTimer + animationTimerBuffer);
@@ -275,11 +275,11 @@ export const ReactPageScroller = ({
   }, [touchMove, keyPress]);
 
   useEffect(() => {
-    isMounted = true;
+    isMountedRef.current = true;
 
     checkRenderOnMount();
     return () => {
-      isMounted = false;
+      isMountedRef.current = false;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -303,13 +303,12 @@ export const ReactPageScroller = ({
       let newComponentsToRenderLength = componentsToRenderLength;
 
       if (customPageNumber !== componentIndex) {
-        if (!isNil(containers[customPageNumber]) && !isScrolling) {
+        if (!isNil(containersRef.current[customPageNumber]) && !isScrolling) {
           isScrolling = true;
-          // eslint-disable-next-line max-len
           scrollPage(customPageNumber);
 
           if (
-            isNil(containers[customPageNumber]) &&
+            isNil(containersRef.current[customPageNumber]) &&
             !isNil(children[customPageNumber])
           ) {
             newComponentsToRenderLength++;
